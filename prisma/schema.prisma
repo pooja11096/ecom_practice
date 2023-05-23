@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  hashedPassword  String
+  role      Role?     @relation(fields: [roleId], references: [id])
+  roleId    Int?      @default(1)
+  carts     Cart[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String
+  permissions Permission[]
+  User        User[]
+}
+
+model Permission {
+  id     String  @id @default(uuid())
+  name   String
+  Role   Role?   @relation(fields: [roleId], references: [id])
+  roleId Int?
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  carts       Cart[]
+  images      Image[]
+  variants    Variant[]
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Image {
+  id        String  @id @default(uuid())
+  url       String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Variant {
+  id        String  @id @default(uuid())
+  name      String
+  price     Float
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+
