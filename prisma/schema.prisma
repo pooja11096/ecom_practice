@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  hashedPassword  String
+  role      Role?     @relation(fields: [roleId], references: [id]) 
+  roleId    Int?      @default(1)
+  carts     Cart[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String
+  permissions Permission[]
+  users        User[]
+}
+
+model Permission {
+  id     String  @id @default(uuid())
+  name   String
+  roles Role[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  categories  ProductCategory[]
+  carts       Cart[]
+  images      Image[]
+  
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  products  ProductCategory[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model ProductCategory{
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  category Category @relation(fields: [categoryId],references: [id])
+  categoryId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@id([productId, categoryId])
+}
+
+model Image {
+  id        String  @id @default(uuid())
+  url       String
+  productId String
+  product   Product @relation(fields: [productId], references: [id],onDelete:Cascade)
+}
+
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+
