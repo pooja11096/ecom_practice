@@ -17,7 +17,6 @@ model User {
   hashedPassword  String
   role      Role?     @relation(fields: [roleId], references: [id]) 
   roleId    Int?      @default(1)
-  carts     Cart[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -36,52 +35,27 @@ model Permission {
   name   String
   roles Role[]
 }
-
 model Product {
   id          String    @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  categories  ProductCategory[]
-  carts       Cart[]
-  images      Image[]
-  
+  product_name        String
+  product_description String
+  product_price       Float
+  categories  Category[]
+ 
 }
 
 model Category {
   id        String    @id @default(uuid())
-  name      String
-  products  ProductCategory[]
+  category_name      String
+  products  Product[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
-model ProductCategory{
-  product Product @relation(fields: [productId], references: [id])
-  productId String
-  category Category @relation(fields: [categoryId],references: [id])
-  categoryId String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@id([productId, categoryId])
-}
-
-model Image {
-  id        String  @id @default(uuid())
-  url       String
-  productId String
-  product   Product @relation(fields: [productId], references: [id],onDelete:Cascade)
-}
 
 
-model Cart {
-  id        String  @id @default(uuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
-}
+
+
+
 
 

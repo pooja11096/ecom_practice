@@ -13,24 +13,60 @@ export class CategoriesService {
     // return 'This action adds a new category';
   }
 
-  findAll() {
-    return this.prismaService.category.findMany({
+  // const users = await this.prismaService.user.findMany({
+  //   include: {role:true}
+  //  })
+  //  console.log("users",users);
+   
+  //  return {users}
+
+
+  async findAllCategory(req: Request, res: Response ) {
+    const categories = await this.prismaService.category.findMany({
       include:{
         products: true
       }
     });
+    console.log("categories",categories);
+    return {categories}
+    
     // return `This action returns all categories`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+ async  findOne(id: string) {
+  return this.prismaService.category.findUnique({where:{id}})
+    // return `This action returns a #${id} category`;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  // async update(id: string, updateUserDto: UpdateUserDto, req: Request, res: Response) {
+  //   // return `This action updates a #${id} user`;
+  //   const { name, email, roleId } = updateUserDto;
+  //   // const hashedPassword = await this.hashPassword(password);
+  //   console.log(updateUserDto);
+    
+  //    await this.prismaService.user.update({
+  //     where:{id},
+  //     data:{ 
+  //     name,
+  //     email,
+  //     roleId:+roleId
+      
+  //   }
+  // });
+
+  async update(id: string, updateCategoryDto: UpdateCategoryDto,req: Request, res: Response) {
+    const {category_name} = updateCategoryDto;
+    return this.prismaService.category.update({
+      where:{id},
+      data:{
+        category_name
+      }
+    })
+    // return `This action updates a #${id} category`;
   }
 
-  remove(id: number) {
+  async remove(id: string) {
+    await this.prismaService.category.delete({where:{id}})
     return `This action removes a #${id} category`;
   }
 }

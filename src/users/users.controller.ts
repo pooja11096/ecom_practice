@@ -18,15 +18,20 @@ export class UsersController {
     return this.usersService.createUser(createUserDto, req, res);
   }
 
-  @Get('/home')
-  @Render('home')
-
-
   @Get()
-  @Render('admin')
-  findAll(@Req() req, @Res() res) {
-    return this.usersService.getAllUsers(req, res);
+  @Render('home')
+  renderHome(){
+    
   }
+
+
+  @Get('/user')
+  @Render('admin')
+  getAllUsers(@Req() req, @Res() res) {
+    return this.usersService.getAllUsers(req, res);
+    
+  }
+  
 
   // @Get('user')
   // getAll(){
@@ -37,7 +42,7 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
-  }
+  } 
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')

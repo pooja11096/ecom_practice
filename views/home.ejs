@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     .container{
       display: flex;
@@ -23,15 +24,43 @@
 
     <div class="row">
     <div id="col1">
-      <div><a href="users/allusers">Manage Users</a></div>
+      <button id="manage_user">Manage Users</button>
+      <!-- <div><a href="/allusers">Manage Users</a></div> -->
     </div>
     <div id="col2">
-      <div>Manage Categories</div>
+      <button>Manage Categories</button>
+      <!-- <div>Manage Categories</div> -->
     </div>
     <div id="col3">
-      <div>Manage Products</div>
+      <button>Manage Products</button>
+      <!-- <div>Manage Products</div> -->
     </div>
     </div>
   </div>
+
+  <script>
+
+
+
+
+    var manageUseBtn = document.getElementById('manage_user');
+
+    manageUseBtn.addEventListener('click', async()=>{
+      // alert('click');
+      await axios.get(`http://localhost:3000/users/user`);
+
+
+      // console.log(res);
+
+    })
+
+    // async function manageUser() {
+    //   axios.get(`/users/user`);
+    // }
+    
+  </script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </body>
+
 </html>

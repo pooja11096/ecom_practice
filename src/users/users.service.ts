@@ -47,16 +47,14 @@ export class UsersService {
   }
 
   async getAllUsers(req: Request, res: Response) {
-    try{
+    
       const users = await this.prismaService.user.findMany({
         include: {role:true}
        })
        console.log("users",users);
        
        return {users}
-    }catch(err){
-      throw err;
-    }
+    
    
   }
 
