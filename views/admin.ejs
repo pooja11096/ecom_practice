@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -24,7 +25,24 @@
         }
 
         form {
-            align-items: center;
+            /* align-items: center; */
+            /* border: 1px solid black;
+            border-radius: 5px; */
+            display: flex;
+            flex-direction: column;
+        }
+
+        label,input{
+            margin: 5px
+        }
+        #updateuser{
+            /* display: flex;
+            height: 100vh;
+            justify-content: center;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 300px; */
+            visibility: hidden;
         }
 
         div {
@@ -137,7 +155,7 @@
 
                     <td> <span onclick="confirmation(`<%= users[i].id %>`)"> Delete</span></td>
                     <!-- <td> <span onclick="updateUser()" id="edit">Edit </span></td> -->
-                    <td><button id="updateBtn">Edit</button></td>
+                    <td><button id="updateBtn" onclick="updateUser(`<%= users[i].id %>`)">Edit</button></td>
 
 
                 </tr>
@@ -167,29 +185,123 @@
         </div>
     </div>
 
-    <div id="updateuser" class="modal">
+    <% users.forEach(function(user) { %>
+    <div id="updateuser<%=user.id%>" class="modal">
         <div>
-            <form action="" method="post">
+            <form action="/users/<%=user.id%>" method="put">
                 <label for="name">Name</label><br>
                 <input type="text" name="name" id="name"><br><br>
 
                 <label for="email">email</label><br>
-                <input type="email" name="email" id="email"><br><br>
+                <input type="email" name="email" id="email" ><br><br>
 
                 <label for="password">password</label><br>
-                <input type="password" name="password" id="password"><br><br>
+                <input type="password" name="password" id="password" ><br><br>
 
                 <label for="role">role</label><br>
-                <input type="text" name="roleId" id="roleId"><br><br>
+                <input type="text" name="roleId" id="roleId" ><br><br>
 
                 <button type="submit" id="updateData">Update User</button>
             </form>
 
         </div>
     </div>
+    <% }) %>
+
+    <div class="model-container" id="updateuser"  class="modal">
+        <div class="model">
+            <div onclick="document.querySelector('.model-container').style.visibility = 'hidden'">Close</div>
+            <form id="updateForm">
+
+                <label for="name">Name</label>
+                <input type="text" name="name" id="updateName">
+
+                <label for="email">email</label>
+                <input type="email" name="email" id="updateEmail" >
+
+                <label for="role">role</label>
+                <input type="text" name="roleId" id="updateRole" >
+
+                <button type="submit" id="updateData">Update User</button>
+               
+            </form>
+        </div>
+    </div>
+
+
+
+    <% users.forEach(function(user) { %>
+        <!-- Edit User Modal -->
+        <div class="modal fade" id="editModal<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/users/<%= user.id %>" method="PUT">
+                  <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" class="form-control" id="edit-name" name="name" placeholder="Enter name" value="<%= user.name %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" class="form-control" id="edit-email" name="email" placeholder="Enter email" value="<%= user.email %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-email">Password</label>
+                    <input type="Password" class="form-control" id="edit-password" name="password" placeholder="Enter password" value="<%= user.password %>" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    
 
 
 <script>
+
+    const updateUser = async (id)=>{
+        
+        const email = document.getElementById('email');
+        const roleId = document.getElementById('roleId');
+
+        var modal1 = document.getElementById("updateuser");
+        modal1.style.visibility = "visible";
+
+        const res = await axios.get(`/users/user/${id}`);
+        const user = res.data;
+        console.log(res);
+        console.log(user);
+        document.getElementById('updateName').value = user.name;
+        document.getElementById('updateEmail').value = user.email;
+        document.getElementById('updateRole').value = user.roleId;
+
+        const updateForm = document.querySelector('#updateuser');
+        updateForm.addEventListener('submit', async (e)=>{
+            e.preventDefault()
+            const res1 = await axios.put(`/users/${id}`, {
+               
+                name: document.getElementById('updateName').value,
+                email: document.getElementById('updateEmail').value,
+                roleId: document.getElementById('updateRole').value,
+            })
+            // modal1.style.visibility = "hidden"; 
+            document.querySelector('.model-container').style.visibility = "hidden";
+
+
+            console.log(res1);
+        })
+
+       
+    
+    }
 
     function getAllUsers() {
         
@@ -225,16 +337,16 @@
         }
     }
 
-    var modal1 = document.getElementById("updateuser");
-    var Ubtn = document.getElementById("updateBtn");
-    Ubtn.onclick = function () {
-        modal1.style.display = "block"
-    }
-    window.onclick = function (event) {
-        if (event.target == modal1) {
-            modal1.style.display = "none";
-        }
-    }
+    // var modal1 = document.getElementById("updateuser");
+    // var Ubtn = document.getElementById("updateBtn");
+    // Ubtn.onclick = function () {
+    //     modal1.style.display = "block"
+    // }
+    // window.onclick = function (event) {
+    //     if (event.target == modal1) {
+    //         modal1.style.display = "none";
+    //     }
+    // }
 
     // function updateUser(id){
     //  var updateBtn = document.getElementById('updateData');
@@ -253,8 +365,8 @@
 
             // fetch(`http://127.0.0.1:5000/delete/${id}`);
 
-            axios.delete(`http://127.0.0.1:5000/users/id`)
-            document.getElementById(id).style.display = "none";
+            axios.delete(`/users/${id}`).then(function (response) { return "data deleted"})
+            // document.getElementById(id).style.display = "none";
             // document.getElementById('').style.display = "none";
 
 

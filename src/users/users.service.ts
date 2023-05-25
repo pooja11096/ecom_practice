@@ -33,7 +33,6 @@ export class UsersService {
           email,
           hashedPassword, 
           roleId:+roleId  
-          // role: { connect: {id:roleId}}
         }
       })
 
@@ -47,37 +46,52 @@ export class UsersService {
     // return 'This action adds a new user';
   }
 
-  // async getAllUsers(req: Request, res: Response) {
-  //  const users = await this.prismaService.user.findMany({
-  //   include: {role:true}
-  //  })
-  // //  console.log(users);
+  async getAllUsers(req: Request, res: Response) {
+    try{
+      const users = await this.prismaService.user.findMany({
+        include: {role:true}
+       })
+       console.log("users",users);
+       
+       return {users}
+    }catch(err){
+      throw err;
+    }
    
-  //  return {users}
-  // }
+  }
 
   async getUsers(){
-    return await this.prismaService.user.findMany();
+
+    try{
+      const users  = await this.prismaService.user.findMany({include: {role:true}});
+
+      return {users}
+
+    }catch(err){
+      throw err;
+    }
+    // return await this.prismaService.user.findMany();
   }
 
   findOne(id: string) {
-    return this.prismaService.user.findUnique({where:{id}})
+    return this.prismaService.user.findUnique({where:{id},include:{
+      role:true
+    }})
     // return `This action returns a #${id} user`;
   }
 
-  async update(id: string, createUserDto: CreateUserDto, req: Request) {
+  async update(id: string, updateUserDto: UpdateUserDto, req: Request, res: Response) {
     // return `This action updates a #${id} user`;
-    const { name, email, password, roleId } = createUserDto;
-    const hashedPassword = await this.hashPassword(password);
-    console.log(createUserDto);
+    const { name, email, roleId } = updateUserDto;
+    // const hashedPassword = await this.hashPassword(password);
+    console.log(updateUserDto);
     
      await this.prismaService.user.update({
       where:{id},
       data:{ 
       name,
       email,
-      hashedPassword, 
-      roleId
+      roleId:+roleId
       
     }
   });

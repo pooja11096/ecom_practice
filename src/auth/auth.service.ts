@@ -78,7 +78,7 @@ export class AuthService {
           res.cookie('token', token, {})
           
           
-          res.redirect('/auth/alluser')
+          res.redirect('/users/home')
           
           return res.send({ message: 'Logged in successfull' })
         } catch (err) {
