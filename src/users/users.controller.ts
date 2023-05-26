@@ -18,8 +18,8 @@ export class UsersController {
     return this.usersService.createUser(createUserDto, req, res);
   }
 
-  @Get()
-  @Render('home')
+  @Get('admin_dashboard')
+  @Render('dashboard')
   renderHome(){
     
   }

@@ -8,8 +8,10 @@ export class CreateProductDto {
     @IsString()
     product_description: string
 
-    @IsNumber()
-    product_price: number
+    @IsNotEmpty()
+    product_price: string
+
+    image_url:string
 
     @IsString()
     // @IsNotEmpty()

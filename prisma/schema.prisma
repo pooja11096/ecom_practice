@@ -15,6 +15,8 @@ model User {
   name      String
   email     String   @unique
   hashedPassword  String
+  cart Cart[]
+  orders Order[]
   role      Role?     @relation(fields: [roleId], references: [id]) 
   roleId    Int?      @default(1)
   createdAt DateTime @default(now())
@@ -39,9 +41,12 @@ model Product {
   id          String    @id @default(uuid())
   product_name        String
   product_description String
-  product_price       Float
+  product_price       String
+  image_url String
   categories  Category[]
- 
+  cart Cart[]
+  orderitems OrderItem[]
+  
 }
 
 model Category {
@@ -51,6 +56,40 @@ model Category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
+
+
+
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+
+
+model Order{
+  id        String    @id @default(uuid())
+  total Float
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete:Cascade)
+  orderItems OrderItem[]
+}
+
+model OrderItem{
+  id String @id @default(uuid())
+  quantity Int
+  price Float
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  orderId String
+  order Order @relation(fields: [orderId], references: [id], onDelete:Cascade)
+}
+
+
 
 
 

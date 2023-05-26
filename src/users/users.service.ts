@@ -52,8 +52,10 @@ export class UsersService {
         include: {role:true}
        })
        console.log("users",users);
-       
+      
        return {users}
+
+       
     
    
   }

@@ -47,6 +47,9 @@ export class AuthService {
         try {
     
           const findUser = await this.prismaService.user.findUnique({ where: { email } })
+
+          console.log("finaduser", findUser);
+          
     
           if (!findUser) {
             throw new BadRequestException('Wrong Credentials');
@@ -74,11 +77,15 @@ export class AuthService {
           
           
             // console.log(decodet.id);
-            
           res.cookie('token', token, {})
           
-          
-          res.redirect('/categories')
+          if(findUser.roleId == 2){
+          res.redirect('/users/admin_dashboard')
+
+          }else{
+            res.redirect('/products')
+          }
+        
           
           return res.send({ message: 'Logged in successfull' })
         } catch (err) {

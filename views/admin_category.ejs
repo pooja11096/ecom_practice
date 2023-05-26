@@ -25,9 +25,7 @@
         }
 
         form {
-            /* align-items: center; */
-            /* border: 1px solid black;
-            border-radius: 5px; */
+            
             display: flex;
             flex-direction: column;
         }
@@ -36,12 +34,7 @@
             margin: 5px
         }
         #updateuser{
-            /* display: flex;
-            height: 100vh;
-            justify-content: center;
-            border: 1px solid black;
-            border-radius: 5px;
-            width: 300px; */
+    
             visibility: hidden;
         }
 
@@ -96,29 +89,19 @@
         }
 
         .modal {
-            /* background-color: aliceblue; */
+            
             border: 1 px solid white;
             display: none;
-            /* Hidden by default */
             position: fixed;
-            /* Stay in place */
-            /* z-index: 1; */
-            /* Sit on top */
             left: 0;
             top: 0;
-            /* width: 100%; */
-            /* Full width */
-            /* height: 100%; */
-            /* Full height */
-            /* overflow: auto; */
-            /* Enable scroll if needed */
-              /* Black w/ opacity */
+          
         }
     </style>
 </head>
 <body>
     <div>
-        <button id="adduser">Add User</button><br>
+        <button id="adduser">Add Category</button><br>
 
         <table border="2px">
             <tr>
@@ -139,7 +122,7 @@
                         <%=i+1%>
                     </td>
                     <td>
-                        <%= categories[i].name %>
+                        <%= categories[i].category_name %>
                     </td>
 
                     <td> <span onclick="confirmation(`<%= categories[i].id %>`)"> Delete</span></td>
@@ -158,20 +141,9 @@
         <div>
             <form action="/categories" method="post">
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="category_name" id="name">
         
-                <button type="submit">Create User</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="updatecategory" class="modal">
-        <div>
-            <form action="/categories" method="post">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name">
-        
-                <button type="submit">Create User</button>
+                <button type="submit">Create Category</button>
             </form>
         </div>
     </div>
@@ -184,9 +156,9 @@
             <form id="updateForm">
 
                 <label for="name">Name</label>
-                <input type="text" name="name" id="updateName">
+                <input type="text" name="category_name" id="updateName">
 
-                <button type="submit" id="updateData">Update User</button>
+                <button type="submit" id="updateData">Update Category</button>
                
             </form>
         </div>
@@ -230,14 +202,14 @@
         const user = res.data;
         console.log("res",res);
         console.log("user",user);
-        document.getElementById('updateName').value = user.name;
+        document.getElementById('updateName').value = user.category_name;
 
         const updateForm = document.querySelector('#updateuser');
         updateForm.addEventListener('submit', async (e)=>{
             e.preventDefault()
             const res1 = await axios.put(`/categories/${id}`, {
                
-                name: document.getElementById('updateName').value,
+                category_name: document.getElementById('updateName').value,
              
             })
             // modal1.style.visibility = "hidden"; 
