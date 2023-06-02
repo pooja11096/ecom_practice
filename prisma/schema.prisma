@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  hashedPassword  String
+  otp Int  @default(0)
+  cart Cart[]
+  orders Order[]
+  role      Role?     @relation(fields: [roleId], references: [id]) 
+  roleId    Int?      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String
+  permissions Permission[]
+  users        User[]
+}
+
+model Permission {
+  id     String  @id @default(uuid())
+  name   String
+  roles Role[]
+}
+model Product {
+  id          String    @id @default(uuid())
+  product_name        String
+  product_description String
+  product_price       String
+  image_url String
+  categories Category[]
+  cart Cart[]
+  orderitems OrderItem[]
+  
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  category_name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
+
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  total Int
+}
+
+
+
+model Order{
+  id        String    @id @default(uuid())
+  total Float
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete:Cascade)
+  orderItems OrderItem[]
+}
+
+model OrderItem{
+  id String @id @default(uuid())
+  quantity Int
+  price Float
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  orderId String
+  order Order @relation(fields: [orderId], references: [id], onDelete:Cascade)
+}
+
+
+
+
+
+
+
+
+
+
