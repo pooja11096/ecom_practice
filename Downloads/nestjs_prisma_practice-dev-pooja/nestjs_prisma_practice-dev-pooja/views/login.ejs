@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <style>
+
+ *{
+    margin: 0;
+    padding: 0;
+
+}
+body{
+    background-image: url('auth-bg.png');
+    color: #ffffff;
+}
+
+.container{
+    /* padding: 40px; */
+    width: 500px;
+    padding-left: 150px;
+    /* margin: 0 auto; */
+}
+.form{
+    background-color: rgba(0,0,0,0.5);
+    height: 100vh;
+    /* border: 1px solid black; */
+
+}
+form{
+  
+    padding: 50px;
+
+}
+.data{
+    display: flex;
+    flex-direction: column;
+}
+input{
+    background-color:#ffffff;
+    padding: 15px;
+    margin-bottom: 30px;
+}
+.submit-btn{
+    background-color: #174F2A;
+    padding-top: 20px;
+}
+
+label{
+    color: white;
+    font-size: 20px;
+    /* margin-bottom: 10px; */
+}
+h3{
+    font-size: 30px;
+    padding-bottom: 30px;
+}
+
+.logo{
+    padding-bottom: 40px;
+}
+
+#signup{
+    padding-top: 80px;
+}
+
+#signup a{
+    color: #A4843F;
+    /* text-decoration: none; */
+}
+#forget-pwd a{
+    color: #A4843F;
+}
+
+.bottom-logo{
+    
+    position: relative;
+    bottom: 60px;
+    left: 1450px;
+    /* background-color: black; */
+   
+}
+
+.warn{
+    color: red;
+    padding-bottom: 10px;
+}
+
+#errmsg{
+    background-color: antiquewhite;
+}
+.err{
+    color: red;
+    padding-bottom: 5px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="container">
+            <div class="form">
+                <form action="/auth/signin" method="post">
+                    <div class="logo">
+                        <img src="logo.svg" alt="">
+                    </div>
+
+                    <h3>Welcome Back!</h3>
+
+                    <div class="data">
+
+                        <label for="email">Email</label><br>
+                        <input type="email" name="email" id="email">
+                        <span id="email_err"></span>
+
+                        <label for="password">Password</label><br>
+                        <input type="password" name="password" id="password">
+                       
+
+                        <div class="link" id="forget-pwd">Forget Password? <a href="/auth/forget_pwd">Click Here</a></div>
+                        <br><input type="submit" value="Login" id="login" class="submit-btn">
+
+                        <div><a href="/auth/google">Google</a></div>
+
+                        <div  class="link" id="signup">Don't have an account?<a href="/auth/signup">Sign up Here.</a>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bottom-logo">
+            <img src="bottom-logo.png" alt="" style="border: 1px solid black;">
+        </div>
+    </div>
+
+    
+</body>
+
+</html>

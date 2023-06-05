@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            
+        *, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: #384047;
+}
+
+form {
+  max-width: 300px;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+}
+
+h1 {
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  font-size: 16px;
+  height: auto;
+  margin: 0;
+  outline: 0;
+  padding: 15px;
+  width: 100%;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+  margin-bottom: 30px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 0 4px 8px 0;
+}
+
+select {
+  padding: 6px;
+  height: 32px;
+  border-radius: 2px;
+}
+
+#updateUserBtn {
+  padding: 19px 39px 18px 39px;
+  color: #FFF;
+  background-color: #4bc970;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #3ac162;
+  border-width: 1px 1px 3px;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  margin-bottom: 10px;
+}
+
+fieldset {
+  margin-bottom: 30px;
+  border: none;
+}
+
+legend {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+label.light {
+  font-weight: 300;
+  display: inline;
+}
+
+.number {
+  background-color: #5fcf80;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 4px;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 100%;
+}
+
+#deleteBtn{
+    cursor: pointer;
+}
+
+@media screen and (min-width: 480px) {
+
+  form {
+    max-width: 480px;
+  }
+
+}
+        /* .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .center-button {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #222;
+            background: f5f5f5;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.25);
+            width: 380px;
+            padding: 20px 30px;
+            background: #fff;
+            box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+            transition: top 0ms ease-in-out 200ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 20ms ease-in-out 0ms;
+
+        }
+
+        .popup .active {
+            top: 50%;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            transition: top 0ms ease-in-out 0ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 20ms ease-in-out 0ms;
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            background: #888;
+            color: #eee;
+            text-align: center;
+            line-height: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .popup .form h2 {
+            text-align: center;
+            color: #222;
+            margin: 10px 0 20px;
+            font-size: 25px;
+        }
+
+        .popup .form .form-element {
+            margin: 15px 0;
+        }
+
+        .popup .form .form-element label {
+            font-size: 14px;
+            color: #222;
+        }
+
+        .popup .form .form-element input[type=text] {
+            margin-top: 5px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            outline: none;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        .popup .form .form-element button {
+            width: 100%;
+            height: 40px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: #222;
+            font-style: 16px;
+            background: #222;
+            color: #f5f5f5;
+            border-radius: 10px;
+            cursor: pointer;
+        } */
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/@webpixels/css@1.1.5/dist/index.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+    <main class="py-6 bg-surface-secondary">
+        <div class="container-fluid">
+
+            <div class="card shadow border-0 mb-7">
+                <div class="card-header">
+                    <div class="header">
+                        <h5 class="mb-0">Products</h5>
+
+                        <button id="add_product_btn" onclick="return addProductPage()">Add Products</button>
+                    </div>
+
+                </div>
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover table-nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Categories</th>
+                                <th scope="col">Delete</th>
+                                <th scope="col">Edit</th>
+                                <th></th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+
+                            <!-- pooja_profile.jpeg -->
+                            <!-- ../uploads/<%= products.image_url %> -->
+                            <% for(var i=0;i<products.length;i++) {%>
+
+                                <!-- <tr>/home/pooja-makwana/Pictures/final_ecom/uploads -->
+                                    <!-- <%=products[i].image_url%> -->
+                                <td>
+                                    <img src="/<%=products[i].image_url%>" class="avatar avatar-sm rounded-circle me-2">
+                                    <a class="text-heading font-semibold" href="#">
+                                        <%= products[i].product_name %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <%= products[i].product_description %>
+
+                                </td>
+                                <td>
+                                    <a class="text-heading font-semibold" href="#">
+                                        <%= products[i].product_price %>
+
+                                    </a>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% for (let j=0; j< products[i].categories.length; j++) { %>
+                                            <li>
+                                                <%= products[i].categories[j].category_name %>
+                                            </li>
+                                            <% } %>
+                                    </ul>
+                                </td>
+
+
+                                <td> <span onclick="return confirmation(`<%= products[i].id %>`)"> Delete</span></td>
+
+                                <td><button id="updateProduct" onclick="updateUser(`<%= products[i].id %>`)">Edit</button>
+                                </td>
+
+
+
+                                </tr>
+                                <% } %>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer border-0 py-5">
+                    <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
+                </div>
+
+
+                <div class="row" id="updateuser" style="visibility: hidden;">
+                    <div class="col-md-12">
+                      <form action="" method="">
+                        
+                        <fieldset>
+                                  
+                          <label for="name">Product Name</label>
+                          <input type="text" id="updateName" name="product_name">
+                        
+                          <label for="product_description">Product description</label>
+                          <input type="text" id="updateDesc" name="product_description">
+
+                          <label for="product_price">Product price</label>
+                          <input type="text" id="updatePrice" name="product_price">
+                
+                          <!-- <label for="password">Password</label>
+                          <input type="password" id="password" name="password">
+                 -->
+                          <!-- <label for="roleId">Role</label>
+                          <input type="text" id="updateRole" name="roleId"> -->
+                       
+                        <button type="submit" id="updateUserBtn" onclick="return refreshPage()">Update User</button>
+                        
+                       </form>
+                        </div>
+                      </div>
+        
+            </div>
+            </div>
+
+                <!-- <div class="row" id="updateuser" style="visibility: hidden;">
+                    <div class="col-md-12">
+                      <form action="" method="" enctype="multipart/form-data">
+                        
+                        <fieldset>
+                                  
+                          <label for="name">Product Name</label>
+                          <input type="text" id="updateName" name="product_name" >
+
+                          <label for="name">Product Description</label>
+                          <input type="text" id="updateDesc" name="product_description">
+
+                          <label for="name">Product Price</label>
+                          <input type="text" id="updatePrice" name="product_price">
+ 
+                       
+                        <button type="submit" id="updateUserBtn" >Update User</button>
+                        
+                       </form>
+                        </div>
+                      </div> -->
+        
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        //  console.log("heyy",products[i].categories[j].category_name)
+
+        // var modal = document.querySelector('.popup');
+        // console.log(modal);
+        // var addProductBtn = document.getElementById('add_product_btn');
+        // console.log(addProductBtn);
+
+        // addProductBtn.onclick = function(){
+        //     alert("hello")
+        //     modal.classList.add("active")
+        // }
+
+
+        function addProductPage() {
+            location.assign('/categories/add_product_page')
+        }
+
+        // async function confirmation(id) {
+        //     if (confirm("Are you sure you want to delete this data..?")) {
+
+
+        //         axios.delete(`/products/${id}`).then(function (response) { return "data deleted" })
+
+        //         window.location.reload()
+
+
+        //     } else {
+        //         alert("not deleted");
+        //     }
+        // }
+        // const updateUser = async (id) => {
+
+        //     var modal1 = document.getElementById("updateuser");
+        //     modal1.style.visibility = "visible";
+
+        //     const res = await axios.get(`/products/${id}`);
+        //     console.log('res',res);
+        //     const user = res.data;
+        //     console.log("products", user);
+        //     // console.log("res",res);
+        //     // console.log("user",user);
+        //     document.getElementById('updateName').value = user.product_name;
+        //     document.getElementById('updateDesc').value = user.product_description;
+        //     document.getElementById('updatePrice').value = user.product_price;
+        //     // document.getElementById('updateCategory').value = user.category_name;
+
+        //     // document.getElementById('updateImg').value = user.image_url;
+
+
+        //     const updateForm = document.querySelector('#updateuser');
+        //     updateForm.addEventListener('submit', async (e) => {
+        //         e.preventDefault()
+        //         const res1 = await axios.put(`/products/${id}`, {
+
+        //             product_name: document.getElementById('updateName').value,
+        //             product_description: document.getElementById('updateDesc').value,
+        //             product_price: document.getElementById('updatePrice').value,
+        //             // image_url: document.getElementById('updateCategory').value,
+
+
+        //         })
+        //         // modal1.style.visibility = "hidden"; 
+        //         document.querySelector('.model-container').style.visibility = "hidden";
+
+
+        //         console.log(res1);
+        //     })
+
+
+
+        // }
+
+        const updateUser = async(id)=>{
+        
+        console.log("hello update product");
+        var modal1 = document.getElementById("updateuser");
+        modal1.style.visibility = "visible";
+        console.log("pid",`${id}`);
+
+        const res = await axios.get(`/products/product/${id}`);    
+        const user = res.data;
+        console.log("res",res);
+        console.log("user",user);
+        document.getElementById('updateName').value = user.product_name;
+        document.getElementById('updateDesc').value = user.product_description;
+        document.getElementById('updatePrice').value = user.product_price;
+
+        // const updateForm = document.querySelector('#updateuser');
+        // updateForm.addEventListener('submit', async (e)=>{
+        //     e.preventDefault()
+        //     const res1 = await axios.put(`/products/${id}`, {
+               
+        //         product_name: document.getElementById('updateName').value,
+        //         product_description: document.getElementById('updateDesc').value,
+        //         product_price: document.getElementById('updatePrice').value,
+        //     })
+        //     document.querySelector('.model-container').style.visibility = "hidden";
+
+         
+
+        //     console.log(res1);
+        // })
+
+}
+
+//         const updateUser = async (id)=>{
+        
+
+//         var modal1 = document.getElementById("updateuser");
+//         modal1.style.visibility = "visible";
+//         console.log("hello");
+//         const res = axios.get(`/products/${id}`);
+//         const user = res.data;
+//         console.log("res",res);
+//         console.log("user",user);
+//         document.getElementById('updateName').value = user.product_name;
+//         document.getElementById('updateDesc').value = user.product_description;
+//         document.getElementById('updatePrice').value = user.product_price;
+//         // document.getElementById('updateCategory').value = user.category_name;
+
+
+//         const updateForm = document.querySelector('#updateuser');
+//         updateForm.addEventListener('submit', async (e)=>{
+//             e.preventDefault()
+//             const res1 = await axios.put(`/products/${id}`, {
+               
+//                 product_name: document.getElementById('updateName').value,
+//                 product_description: document.getElementById('updateDesc').value,
+//                 product_price: document.getElementById('updatePrice').value,
+//                 // category_name: document.getElementById('updateCategory').value
+
+//             })
+//             // modal1.style.visibility = "hidden"; 
+//             document.querySelector('.model-container').style.visibility = "hidden";
+
+//             // location.assign('/users/user')
+//         // window.location.reload();
+
+//             console.log(res1);
+//         })
+
+// }
+        async function confirmation(id) {
+        if (confirm("Are you sure you want to delete this data..?")) {
+
+            axios.delete(`/products/${id}`).then(function (response) { return "data deleted"})
+
+            window.location.reload()
+
+        } else {
+            alert("not deleted");
+        }
+    }
+
+    
+async function pagination(page){
+       console.log(page);
+       var set = '';
+       
+       await axios.post(`/products/page?page=${page}`).then(function (response) { 
+          console.log("",response.data);
+          for(var i=0;i<response.data.length;i++){
+            set+=`<tr><td>${ response.data[i].name }</td><td>${ response.data[i].email}</td><td>${ response.data[i].role.name }</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${ response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${ response.data[i].id }')"><i class="bi bi-trash"></i></button></td></tr>`
+
+          }
+             console.log(set);
+           document.getElementById("change").innerHTML=set;
+
+       });
+     } 
+
+async function searching(){
+
+var val= document.getElementById("search").value
+console.log(val);
+var set = '';
+await axios.get(`/products/search?data=${val}`).then(function (response) { 
+ console.log("datt ===",response.data);
+
+
+ for(var i=0;i<response.data.length;i++){
+  set+=`<tr><td>${ response.data[i].name }</td><td>${ response.data[i].email}</td><td>${ response.data[i].role.name }</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${ response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${ response.data[i].id }')"><i class="bi bi-trash"></i></button></td></tr>`
+}
+  console.log(set);
+  document.getElementById("change").innerHTML=set;
+});
+
+}
+
+
+async function sorting(sort){
+      console.log(sort);
+    var set = '';
+    number=document.getElementById("number").value;
+    console.log(number);
+    if(number%2==0){
+      var plus=++number;
+      document.getElementById("number").value=plus;
+      console.log("plus",plus);
+      console.log("if",number%2==0);
+    var sort_type = 'desc';
+    await axios.post(`/products/sort-user?data=${sort}&type=${sort_type}`).then(function (response){
+      console.log(response);
+
+ for(var i=0;i<response.data.length;i++){
+  
+  set+=`<tr><td>${ response.data[i].name }</td><td>${ response.data[i].email}</td><td>${ response.data[i].role.name }</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${ response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${ response.data[i].id }')"><i class="bi bi-trash"></i></button></td></tr>`
+
+
+}
+  console.log(set);
+  document.getElementById("change").innerHTML=set;
+    });
+
+    }else{
+      var plus=++number;
+      console.log("plus",plus);
+      document.getElementById("number").value=plus;
+
+      
+      console.log("else",number%2==0);
+    var sort_type = 'asc';
+    await axios.post(`/products/sort-user?data=${sort}&type=${sort_type}`).then(function (response){
+      console.log(response);
+
+ for(var i=0;i<response.data.length;i++){
+  
+  set+=`<tr><td>${ response.data[i].name }</td><td>${ response.data[i].email}</td><td>${ response.data[i].role.name }</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${ response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${ response.data[i].id }')"><i class="bi bi-trash"></i></button></td></tr>`
+
+
+}
+  console.log(set);
+  document.getElementById("change").innerHTML=set;
+    });
+
+    }
+   
+  }
+
+
+       
+
+    // document.getElementById('add_product_btn').addEventListener('click',function(){
+    //     document.querySelector(".popup").classList.add("active");
+    // })
+
+    // document.querySelector('.popup .close-btn').addEventListener('click',function(){
+    //     document.querySelector(".popup").classList.remove("active");
+    // })
+
+    // var modal = document.getElementById("createuser");
+    // var btn = document.getElementById("adduser");
+    // btn.onclick = function () {
+    //     modal.style.display = "block"
+    // }
+    // window.onclick = function (event) {
+    //     if (event.target == modal) {
+    //         modal.style.display = "none";
+    //     }
+    // }
+
+    // var modal = document.getElementById("create_category");
+    // var btn = document.getElementById("adduser");
+    // btn.onclick = function () {
+    //     modal.style.display = "block"
+    // }
+    // window.onclick = function (event) {
+    //     if (event.target == modal) {
+    //         modal.style.display = "none";
+    //     }
+    // }
+
+    </script>
+</body>
+
+</html>

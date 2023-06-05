@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order history</title>
+    <link rel="stylesheet" href="/css/cart.css">
+    <style>
+      #order_detail{
+        display: flex;
+        flex-direction:row;
+        justify-content: space-between;
+      }
+      .container cart{
+        border: 1px solod black;
+        border-radius: 15px;
+      }
+    </style>
+</head>
+<body>
+  <h1>Your Orders...</h1>
+    <div class="container cart">
+        <div id="order_detail">
+            <p>order id: <%=lastorder.id %></p>
+            <p>order date:<%=lastorder.createdAt %></p>
+        </div>
+        <div>
+            <div >
+                <table>
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                  </tr>
+                  <% for(var i=0;i<lastorder.orderItems.length;i++) {%>
+          
+                  <tr>
+                    <td>
+                      <div class="cart-info">
+                        <img src="/<%=lastorder.orderItems[i].product.image_url %>" alt="..." />
+                        <div>
+                          <p><%=lastorder.orderItems[i].product.product_name %></p><br>
+                          <span>Price: <%=lastorder.orderItems[i].product.product_price %></span> <br />
+                        </div>
+                      </div>
+                    </td>
+                    <td><input type="number" value="<%=lastorder.orderItems[i].quantity %>" min="1" disabled /></td>
+                    <td> <%=lastorder.orderItems[i].total%></td>
+                  </tr>
+                  <% } %>
+          
+                </table>
+                <div class="total-price">
+                  <table>
+                    <tr>
+                      <td>Subtotal</td>
+                      <td id="finaltotal"><%=lastorder.total%></td>
+                    </tr>
+                    <!-- <tr>
+                      <td>Tax</td>
+                      <td>$50</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>$250</td>
+                    </tr> -->
+                  </table>
+                  <!-- <button class="checkout btn" onclick="placeOrder()">Proceed To Checkout</button> -->
+                  <!-- <a href="" class="checkout btn">Proceed To Checkout</a> -->
+                </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>
