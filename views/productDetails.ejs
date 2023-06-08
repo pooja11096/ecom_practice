@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/css/product_detail.css">
+
+</head>
+
+<body>
+  <!-- Navigation -->
+  <div class="top-nav">
+    <div class="container d-flex">
+      <!-- <p>Order Online Or Call Us: (001) 2222-55555</p>
+        <ul class="d-flex">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul> -->
+    </div>
+  </div>
+  <div class="navigation">
+    <div class="nav-center container d-flex">
+      <a href="index.html" class="logo">
+        <h1>eShop</h1>
+      </a>
+
+      <ul class="nav-list d-flex">
+        <li class="nav-item">
+          <a href="/users/user_home" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="/products/user_product" class="nav-link">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a href="/auth/signout" class="nav-link">Logout</a>
+        </li>
+        <!-- <li class="nav-item">
+            <a href="#terms" class="nav-link">Terms</a>
+          </li> -->
+        <!-- <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li> -->
+        <!-- <li class="nav-item">
+            <a href="#contact" class="nav-link">Contact</a>
+          </li> -->
+
+        <li class="icons d-flex">
+          <a href="/auth/signin" class="icon">
+            <i class="bx bx-user"></i>
+          </a>
+          <div class="icon">
+            <i class="bx bx-search"></i>
+          </div>
+          <!-- <div class="icon">
+              <i class="bx bx-heart"></i>
+              <span class="d-flex">0</span>
+            </div> -->
+          <a href="/cart/cart_page" class="icon">
+            <i class="bx bx-cart"></i>
+            <span class="d-flex">0</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="icons d-flex">
+        <a href="/auth/signin" class="icon">
+          <i class="bx bx-user"></i>
+        </a>
+        <div class="icon">
+          <i class="bx bx-search"></i>
+        </div>
+        <!-- <div class="icon">
+            <i class="bx bx-heart"></i>
+            <span class="d-flex">0</span>
+          </div> -->
+        <a href="/cart/cart_page" class="icon">
+          <i class="bx bx-cart"></i>
+          <!-- <span class="d-flex">3</span> -->
+        </a>
+      </div>
+
+      <div class="hamburger">
+        <i class="bx bx-menu-alt-left"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Details -->
+  <section class="section product-detail">
+    <div class="details container">
+      <div class="left image-container">
+        <div class="main">
+          <img src="/<%=product.image_url%>" id="zoom" alt="" />
+        </div>
+      </div>
+      <div class="right">
+        <span>
+          <%=product.categories[0].category_name%>
+        </span>
+        <h1>
+          <%=product.product_name%>
+        </h1>
+        <!-- <p><%=product.product_description%></p> <br> -->
+        <div class="price">
+          <%=product.product_price%>
+        </div>
+        <form>
+          <div>
+            <!-- <select>
+                <option value="Select Size" selected disabled>
+                  Select Size
+                </option>
+                <option value="1">32</option>
+                <option value="2">42</option>
+                <option value="3">52</option>
+                <option value="4">62</option>
+              </select> -->
+            <!-- <span><i class="bx bx-chevron-down"></i></span> -->
+          </div>
+        </form>
+        <form class="form">
+          <input type="number" placeholder="1" id="quantity" value="1" />
+          <!-- <input type="number" id="quantity" name="quantity" min="1" max="5"> -->
+
+
+          <a class="addCart" onclick="return addToCart(`<%=product.id%>`,`<%=product.product_price%>`)">Add To Cart</a>
+
+        </form>
+        <h3>Product Detail</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero minima
+          delectus nulla voluptates nesciunt quidem laudantium, quisquam
+          voluptas facilis dicta in explicabo, laboriosam ipsam suscipit!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="section featured">
+    <div class="top container">
+      <h1>Related Products</h1>
+      <a href="#" class="view-more">View more</a>
+    </div>
+    <div class="product-center container">
+      <div class="product-item">
+        <div class="overlay">
+          <a href="" class="product-thumb">
+            <img src="./images/product-5.jpg" alt="" />
+          </a>
+        </div>
+        <div class="product-info">
+          <span>MEN'S CLOTHES</span>
+          <a href="">Concepts Solid Pink Men’s Polo</a>
+          <h4>$150</h4>
+        </div>
+        <ul class="icons">
+          <li><i class="bx bx-heart"></i></li>
+          <li><i class="bx bx-search"></i></li>
+          <li><i class="bx bx-cart"></i></li>
+        </ul>
+      </div>
+      <div class="product-item">
+        <div class="overlay">
+          <a href="" class="product-thumb">
+            <img src="./images/product-2.jpg" alt="" />
+          </a>
+          <span class="discount">40%</span>
+        </div>
+        <div class="product-info">
+          <span>MEN'S CLOTHES</span>
+          <a href="">Concepts Solid Pink Men’s Polo</a>
+          <h4>$150</h4>
+        </div>
+        <ul class="icons">
+          <li><i class="bx bx-heart"></i></li>
+          <li><i class="bx bx-search"></i></li>
+          <li><i class="bx bx-cart"></i></li>
+        </ul>
+      </div>
+      <div class="product-item">
+        <div class="overlay">
+          <a href="" class="product-thumb">
+            <img src="./images/product-7.jpg" alt="" />
+          </a>
+        </div>
+        <div class="product-info">
+          <span>MEN'S CLOTHES</span>
+          <a href="">Concepts Solid Pink Men’s Polo</a>
+          <h4>$150</h4>
+        </div>
+        <ul class="icons">
+          <li><i class="bx bx-heart"></i></li>
+          <li><i class="bx bx-search"></i></li>
+          <li><i class="bx bx-cart"></i></li>
+        </ul>
+      </div>
+      <div class="product-item">
+        <div class="overlay">
+          <a href="" class="product-thumb">
+            <img src="./images/product-4.jpg" alt="" />
+          </a>
+          <span class="discount">40%</span>
+        </div>
+        <div class="product-info">
+          <span>MEN'S CLOTHES</span>
+          <a href="">Concepts Solid Pink Men’s Polo</a>
+          <h4>$150</h4>
+        </div>
+        <ul class="icons">
+          <li><i class="bx bx-heart"></i></li>
+          <li><i class="bx bx-search"></i></li>
+          <li><i class="bx bx-cart"></i></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="row">
+      <div class="col d-flex">
+        <h4>INFORMATION</h4>
+        <a href="">About us</a>
+        <a href="">Contact Us</a>
+        <a href="">Term & Conditions</a>
+        <a href="">Shipping Guide</a>
+      </div>
+      <div class="col d-flex">
+        <h4>USEFUL LINK</h4>
+        <a href="">Online Store</a>
+        <a href="">Customer Services</a>
+        <a href="">Promotion</a>
+        <a href="">Top Brands</a>
+      </div>
+      <div class="col d-flex">
+        <span><i class="bx bxl-facebook-square"></i></span>
+        <span><i class="bx bxl-instagram-alt"></i></span>
+        <span><i class="bx bxl-github"></i></span>
+        <span><i class="bx bxl-twitter"></i></span>
+        <span><i class="bx bxl-pinterest"></i></span>
+      </div>
+    </div>
+  </footer>
+  <!-- Custom Script -->
+
+  <script>
+
+
+
+    //   document.querySelector(".addToCart").addEventListener('click', function(){
+    //   toastMixin.fire({
+    //     animation: true,
+    //     title: 'Signed in Successfully'
+    //   });
+    // });
+
+
+    const addToCart = async (pid, price) => {
+
+      // const isUser = await axios.get(`auth/usertoken`);
+      // console.log("is user", isUser);
+      // console.log("hello add to cart");
+
+      // console.log(product.product_price);
+      // e.preventDefault();
+      console.log(price);
+      const quantity = document.getElementById('quantity').value;
+      console.log(quantity);
+      // const price = document.getElementById('price').value;
+      const subtotal = quantity * price;
+      console.log(subtotal);
+
+      var toastMixin = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+
+      toastMixin.fire({
+        animation: true,
+        title: 'Product successfully added to cart'
+      });
+
+      const res = await axios.post(`/cart/cart`, {
+        productId: pid,
+        quantity: +quantity,
+        total: +subtotal
+      })
+      console.log("res", res);
+
+
+
+    }
+
+
+        // async function addToCart(pid,uid){
+        //     console.log("hello add to cart");
+        //      const res = await axios.post(`/cart/cart/${pid}/${uid}`,{
+        //         quantity: '2',
+        //         total:'1000'
+        //      })
+        // }
+          // const decoded = jwt.verify(token, 'secret');
+          // console.log('decoded',decoded);
+        // const user = JSON.parse(
+        //     Buffer.from(token.split('.')[1], 'base64').toString('utf-8'),
+        //     );
+        //     console.log("payload");
+        // console.log("user",user);
+  </script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="/js/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha384-JUMjoW8OzDJw4oFpWIB2Bu/c6768ObEthBMVSiIx4ruBIEdyNSUQAjJNFqT5pnJ6"
+    crossorigin="anonymous"></script>
+  <script src="/js/zoomsl.min.js"></script>
+  <script>
+    $(function () {
+      console.log("hello");
+      $("#zoom").imagezoomsl({
+        zoomrange: [4, 4],
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/@webpixels/css@1.1.5/dist/index.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/crud.css">
+
+</head>
+
+<body>
+
+  <main class="py-6 bg-surface-secondary">
+    <div class="container-fluid">
+
+      <div class="card shadow border-0 mb-7">
+        <div class="card-header">
+          <!-- <span class="bi bi-house"></span> -->
+          <div><a href="/orders/admin_dashboard">Home</a></div>
+
+          <div class="search">
+
+            <label>
+              <input type="text" placeholder="Search here" class="search" id="search" onkeyup="searching()" />
+
+              <ion-icon name="search-outline"></ion-icon>
+            </label>
+
+
+          </div>
+
+          <div class="user"></div>
+
+          <div class="header">
+            <h5 class="mb-0">Categories</h5>
+
+            <button id="add_category_btn" onclick="return addCategoryBtn()">Add Category</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+
+          <table class="table table-hover table-nowrap">
+            <thead class="thead-light">
+              <input type="text" class="number" id="number" value="1" hidden>
+
+              <tr>
+                <th scope="col" id="category_name" onclick="sorting(this.id)">Category Name</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
+
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <% for(var i=0;i<categories.length;i++) {%>
+
+                <!-- <tr>/home/pooja-makwana/Pictures/final_ecom/uploads -->
+                <td>
+                  <a class="text-heading font-semibold" href="#">
+                    <%= categories[i].category_name %>
+                  </a>
+                </td>
+
+
+
+                <td><button onclick="confirmation(`<%= categories[i].id %>`)" id="deleteBtn">Delete</button></td>
+
+
+                <td><button id="updateBtn" onclick="updateUser(`<%= categories[i].id %>`)">Edit</button></td>
+
+
+
+                </tr>
+                <% } %>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer border-0 py-5">
+          <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
+        </div>
+
+        <div class="model-container-products row" id="updateuser" style="visibility: hidden;">
+          <div class="col-md-12">
+            <form action="" method="">
+
+              <fieldset>
+
+                <label for="name">Category Name</label>
+                <input type="text" id="updateName" name="category_name">
+
+
+                <button type="submit" id="updateUserBtn" onclick="return refreshPage()">Update User</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="center">
+        <div class="pagination">
+          <%for(var i=1; i <=lastPage; i++) { %>
+
+            <span class="page" id="<%=i%>" onclick="pagination('<%=i%>')">
+              <%=i%>
+            </span>
+            <% } %>
+
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </main>
+
+  <script>
+
+
+    function addCategoryBtn() {
+      window.location.assign('/categories/add_category_page')
+
+    }
+    function refreshPage() {
+
+
+      window.location.reload();
+
+    }
+
+    async function confirmation(id) {
+      if (confirm("Are you sure you want to delete this data..?")) {
+
+        axios.delete(`/categories/${id}`).then(function (response) { return "data deleted" })
+        window.location.reload();
+      } else {
+        alert("not deleted");
+      }
+    }
+
+
+    const updateUser = async (id) => {
+
+      console.log("cats");
+
+      var modal1 = document.getElementById("updateuser");
+      modal1.style.visibility = "visible";
+
+      const res = await axios.get(`/categories/${id}`);
+      const user = res.data;
+      document.getElementById('updateName').value = user.category_name;
+      console.log("cats1");
+
+      const updateForm = document.querySelector('#updateuser');
+      console.log("cats2");
+
+
+      updateForm.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const res1 = await axios.put(`/categories/${id}`, {
+
+          category_name: document.getElementById('updateName').value,
+
+        })
+        console.log("cats3");
+
+        document.querySelector('.model-container').style.visibility = "hidden";
+
+
+        console.log(res1);
+      })
+
+
+
+    }
+
+    async function searching() {
+
+      var val = document.getElementById("search").value
+      console.log("search", val);
+      var set = '';
+      await axios.post(`/categories/search-category?data=${val}`).then(function (response) {
+        console.log("datt ===", response.data);
+
+
+        for (var i = 0; i < response.data.length; i++) {
+          // set += `<tr><td>${response.data[i].category_name}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+
+          set += `<tr><td>
+                  <a class="text-heading font-semibold" href="#">
+                    ${response.data[i].category_name}
+                  </a>
+                </td>
+                <td><button onclick="confirmation('${response.data[i].id}')" id="deleteBtn">Delete</button></td>
+<td><button id="updateBtn" onclick="updateUser('${response.data[i].id}')">Edit</button></td></tr>`
+
+        }
+        console.log(set);
+        document.getElementById("tbody").innerHTML = set;
+      });
+
+    }
+
+    async function pagination(page) {
+      console.log(page);
+      var set = '';
+
+      await axios.post(`/categories/category/page?page=${page}`).then(function (response) {
+        console.log("", response.data);
+        for (var i = 0; i < response.data.length; i++) {
+          set += `<tr><td>
+                  <a class="text-heading font-semibold" href="#">
+                    ${response.data[i].category_name}
+                  </a>
+                </td>
+                <td><button onclick="confirmation('${response.data[i].id}')" id="deleteBtn">Delete</button></td>
+
+
+<td><button id="updateBtn" onclick="updateUser('${response.data[i].id}')">Edit</button></td></tr>`
+
+        }
+        console.log(set);
+        document.getElementById("tbody").innerHTML = set;
+
+      });
+    }
+
+
+
+
+    async function sorting(sort) {
+      console.log(sort);
+      var set = '';
+      number = document.getElementById("number").value;
+      console.log(number);
+      if (number % 2 == 0) {
+        var plus = ++number;
+        document.getElementById("number").value = plus;
+        console.log("plus", plus);
+        console.log("if", number % 2 == 0);
+        var sort_type = 'desc';
+        await axios.post(`/categories/sort-category?data=${sort}&type=${sort_type}`).then(function (response) {
+          console.log(response);
+
+          for (var i = 0; i < response.data.length; i++) {
+
+            set += `<tr><td>
+                  <a class="text-heading font-semibold" href="#">
+                    ${response.data[i].category_name}
+                  </a>
+                </td>
+                <td><button onclick="confirmation('${response.data[i].id}')" id="deleteBtn">Delete</button></td>
+
+
+<td><button id="updateBtn" onclick="updateUser('${response.data[i].id}')">Edit</button></td></tr>`
+
+
+          }
+          console.log(set);
+          document.getElementById("tbody").innerHTML = set;
+        });
+
+      } else {
+        var plus = ++number;
+        console.log("plus", plus);
+        document.getElementById("number").value = plus;
+
+
+        console.log("else", number % 2 == 0);
+        var sort_type = 'asc';
+        await axios.post(`/categories/sort-category?data=${sort}&type=${sort_type}`).then(function (response) {
+          console.log(response);
+
+          for (var i = 0; i < response.data.length; i++) {
+
+            set += `<tr><td>
+                  <a class="text-heading font-semibold" href="#">
+                    ${response.data[i].category_name}
+                  </a>
+                </td>
+                <td><button onclick="confirmation('${response.data[i].id}')" id="deleteBtn">Delete</button></td>
+
+
+<td><button id="updateBtn" onclick="updateUser('${response.data[i].id}')">Edit</button></td></tr>`
+
+
+          }
+          console.log(set);
+          document.getElementById("tbody").innerHTML = set;
+        });
+
+      }
+
+    }
+  </script>
+</body>
+
+</html>

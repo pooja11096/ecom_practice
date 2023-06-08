@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css
+">
+<style>
+    .product-imge{
+        border: 1px solid black;
+    }
+    .col-md-4{
+      margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Product Management System</a>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <form class="form-inline">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Logout</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <button onclick="return addToCart()">Cart</button>
+
+  <div class="container mt-4">
+    <h2>Products</h2>
+    <div class="row">
+
+    <% for(var i=0;i<products.length;i++) {%>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="product-img">
+                <img src="/<%=products[i].image_url%>" alt="....">
+            </div><br>
+            <h5 class="card-title">Product name:<%=products[i].product_name%></h5>
+            <p class="card-text">Category: Category 1</p>
+            <p class="card-text">Price:<%=products[i].product_price%></p>
+            <p class="card-text">Description:<%=products[i].product_description%></p>
+            <button onclick="return addToCart()">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+      
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js
+"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js
+"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js
+"></script>
+
+<script>
+
+  function addToCart() {
+    axios.get(`/cart`).then(function(response){return 'data created'})
+
+  }
+</script>
+
+</body>
+</html>

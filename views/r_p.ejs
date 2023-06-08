@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Roles jh.lkj</h1>
+    <div>
+        <table>
+            <tr>
+                <th scope="col" id="product_name" onclick="sorting(this.id)">Role Name</th>
+                <!-- <th scope="col" id="product_description" onclick="sorting(this.id)">Description</th>
+                <th scope="col" id="product_price" onclick="sorting(this.id)">Price</th> -->
+                <th scope="col">permissions</th>
+                <th scope="col">Edit</th>
+
+            </tr>
+
+            <tbody id="tbody">
+                <% for(var i=0;i<roles.length;i++) {%>
+
+                    <tr>
+                        <td>
+                            <a class="text-heading font-semibold" href="#">
+                                <%= roles[i].name %>
+                            </a>
+                        </td>
+
+                        <% for(var j=0;j<permissions.length;j++) {%>
+
+
+                            <td>
+                                <input type="checkbox" name="create" id="create" checked>
+                                <%=permissions[j].name%>
+                            </td>
+                            <%else%>
+                                <td>
+                                    <input type="checkbox" name="create" id="create">
+                                    <%=permissions[j].name%>
+                                </td>
+
+                                <% } %>
+
+
+                                    <!-- <td>
+                            <input type="checkbox" name="view" id="view">view
+                        </td>
+                        <td>
+                            <input type="checkbox" name="edit" id="edit">edit
+                        </td>
+                        <td>
+                            <input type="checkbox" name="delete" id="delete">delete
+                        </td> -->
+                                    <td>
+                                        <input type="submit" value="edit">
+                                    </td>
+                                    <!-- <td>
+                        <% for(j=0; j<permissions.length;j ++){ %>
+                           <% if(roles[i].permissions[i].name == permissions[j].name){%>
+                                <input type="checkbox" name="name" value="<%= permissions[j].name%>" checked><%= permissions[j].name%>
+
+                            <%}else{%>
+                                <input type="checkbox" name="name" value="<%= permissions[j].name%>"><%= permissions[j].name%>
+
+                            <%} %>  
+                        <% }%>
+
+                      </td> -->
+
+
+                    </tr>
+                    <% } %>
+            </tbody>
+
+        </table>
+    </div>
+</body>
+
+</html>

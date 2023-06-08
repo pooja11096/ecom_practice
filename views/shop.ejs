@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Box icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- Custom StyleSheet -->
+  <!-- <link rel="stylesheet" href="/style.css" /> -->
+  <link rel="stylesheet" href="/css/shop.css">
+  <title>Boy’s T-Shirt</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <div class="top-nav">
+    <div class="container d-flex">
+
+    </div>
+  </div>
+  <div class="navigation">
+    <div class="nav-center container d-flex">
+      <a href="index.html" class="logo">
+        <h1>eShop</h1>
+      </a>
+
+      <ul class="nav-list d-flex">
+        <li class="nav-item">
+          <a href="/users/user_home" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="/products/user_product" class="nav-link">Shop</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/auth/signout" class="nav-link">Logout</a>
+        </li>
+
+        <li class="nav-item">
+          <div class="search">
+            <label>
+              <input type="text" placeholder="Search here" class="search" id="search" onkeyup="searching()"
+                style="padding:15px;" />
+
+              <ion-icon name="search-outline"></ion-icon>
+            </label>
+          </div>
+        </li>
+
+        <li>
+          <!-- <div class="search">
+              <label>
+                <input type="text" placeholder="Search here" class="search" id="search" onkeyup="searching()" />
+  
+                <ion-icon name="search-outline"></ion-icon>
+              </label>
+            </div> -->
+        </li>
+        <li class="icons d-flex">
+          <a href="login.html" class="icon">
+            <i class="bx bx-user"></i>
+          </a>
+          <div class="icon">
+            <i class="bx bx-search"></i>
+          </div>
+          <div class="icon">
+            <i class="bx bx-heart"></i>
+            <span class="d-flex">0</span>
+          </div>
+          <a href="/cart/cart_page" class="icon">
+            <i class="bx bx-cart"></i>
+            <span class="d-flex">0</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="icons d-flex">
+        <a href="/auth/signin" class="icon">
+          <i class="bx bx-user"></i>
+        </a>
+        <div class="icon">
+          <i class="bx bx-search"></i>
+        </div>
+        <!-- <div class="icon">
+            <i class="bx bx-heart"></i>
+            <span class="d-flex">0</span>
+          </div> -->
+        <a href="/cart/cart_page" class="icon">
+          <i class="bx bx-cart"></i>
+          <span class="d-flex">0</span>
+        </a>
+      </div>
+
+      <div class="hamburger">
+        <i class="bx bx-menu-alt-left"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Products -->
+  <section class="section all-products" id="products">
+    <div class="top container">
+      <h1>All Products</h1>
+      <form>
+        <input type="text" class="number" id="number" value="1" hidden>
+        <!-- <button id="product_name" onclick="sorting(this.value)">fghg</button> -->
+        <select onchange="sorting(this.value)">
+
+          <option value="1">Default Sorting</option>
+          <option value="product_name" id="product_name">Sort By name</option>
+          <option value="product_description" id="product_description">Sort By description</option>
+          <option value="product_price" id="product_price">Sort By price</option>
+        </select>
+        <span><i class="bx bx-chevron-down"></i></span>
+      </form>
+    </div>
+    <div class="product-center container" id="tbody">
+      <% for(var i=0;i<products.length;i++) {%>
+
+        <div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="/<%=products[i].image_url%>" alt="" />
+            </a>
+            <span class="discount">
+              <%=products[i].categories[0].category_name%>
+            </span>
+          </div>
+          <div class="product-info">
+            <span>
+              <%=products[i].product_name%>
+            </span>
+            <a href="/products/product/<%=products[i].id%>">
+              <%=products[i].product_description%>
+            </a>
+            <h4>$<%=products[i].product_price%>
+            </h4>
+          </div>
+          <ul class="icons">
+            <!-- <li><i class="bx bx-heart"></i></li> -->
+            <li><a href="/products/product/<%=products[i].id%>" class="product-thumb"><i class="bx bx-search"></i></a>
+            </li>
+
+          </ul>
+        </div>
+        <% } %>
+
+    </div>
+  </section>
+  <!-- <div class="center">
+      <div class="pagination">
+        <%for(var i=1; i <=3; i++) { %>
+
+          <span class="page" id="<%=i%>" onclick="pagination('<%=i%>')">
+            <%=i%>
+          </span>
+          <% } %>
+
+      </div>
+</div> -->
+  <section class="pagination">
+    <div class="container">
+      <%for(var i=1; i<=lastPage; i++) { %>
+
+        <span class="page" id="<%=i%>" onclick="pagination('<%=i%>')">
+          <%=i%>
+        </span>
+        <% } %>
+
+          <span><i class="bx bx-right-arrow-alt"></i></span>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="row">
+      <div class="col d-flex">
+        <h4>INFORMATION</h4>
+        <a href="">About us</a>
+        <a href="">Contact Us</a>
+        <a href="">Term & Conditions</a>
+        <a href="">Shipping Guide</a>
+      </div>
+      <div class="col d-flex">
+        <h4>USEFUL LINK</h4>
+        <a href="">Online Store</a>
+        <a href="">Customer Services</a>
+        <a href="">Promotion</a>
+        <a href="">Top Brands</a>
+      </div>
+      <div class="col d-flex">
+        <span><i class="bx bxl-facebook-square"></i></span>
+        <span><i class="bx bxl-instagram-alt"></i></span>
+        <span><i class="bx bxl-github"></i></span>
+        <span><i class="bx bxl-twitter"></i></span>
+        <span><i class="bx bxl-pinterest"></i></span>
+      </div>
+    </div>
+  </footer>
+  <!-- Custom Script -->
+  <script src="/js/index.js"></script>
+  <script>
+    const addToCart = async (pid, price) => {
+
+      const subtotal = quantity * price;
+      console.log(subtotal);
+
+      const res = await axios.post(`/cart/cart`, {
+        productId: pid,
+        quantity: 1,
+        total: price
+      })
+      console.log("res", res);
+
+    }
+
+    async function searching() {
+
+      var val = document.getElementById("search").value
+      console.log(typeof val);
+      var set = '';
+      await axios.post(`/products/search-product?data=${val}`).then(function (response) {
+        console.log("datt ===", response.data);
+
+
+        for (var i = 0; i < response.data.length; i++) {
+          // set += `<tr><td>${response.data[i].name}</td><td>${response.data[i].email}</td><td>${response.data[i].role.name}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+
+          set += `<div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="/${response.data[i].image_url}" alt="" />
+            </a>
+            <span class="discount">${response.data[i].categories[0].category_name}</span>
+          </div>
+          <div class="product-info">
+            <span>${response.data[i].product_name}</span>
+            <a href="/products/product/${response.data[i].id}">${response.data[i].product_description}</a>
+            <h4>${response.data[i].product_price}</h4>
+          </div>
+          <ul class="icons">
+            <li><a href="" class="product-thumb"><i class="bx bx-search"></i></a></li>
+            
+          </ul>
+        </div>`
+
+        }
+        console.log(set);
+        document.getElementById("tbody").innerHTML = set;
+      });
+
+    }
+
+
+
+
+    async function pagination(page) {
+      console.log(page);
+      var set = '';
+
+      await axios.post(`/products/page?page=${page}`).then(function (response) {
+        console.log("reeee", response.data.length);
+        for (var i = 0; i < response.data.length; i++) {
+
+
+          set += `<div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="/${response.data[i].image_url}" alt="" />
+            </a>
+            <span class="discount">${response.data[i].categories[0].category_name}</span>
+          </div>
+          <div class="product-info">
+            <span>${response.data[i].product_name}</span>
+            <a href="/products/product/${response.data[i].id}">${response.data[i].product_description}</a>
+            <h4>${response.data[i].product_price}</h4>
+          </div>
+          <ul class="icons">
+            <li><a href="" class="product-thumb"><i class="bx bx-search"></i></a></li>
+            
+          </ul>
+        </div>`
+
+        }
+        console.log(set);
+        document.getElementById("tbody").innerHTML = set;
+
+      });
+    }
+
+
+
+
+    async function sorting(sort) {
+
+      console.log("sort data");
+      console.log(sort);
+      var set = '';
+      // number = document.getElementById("number").value;
+      // console.log(number);
+      if (number % 2 == 0) {
+        var plus = ++number;
+        document.getElementById("number").value = plus;
+        console.log("plus", plus);
+        console.log("if", number % 2 == 0);
+        var sort_type = 'desc';
+        await axios.post(`/products/sort-product?data=${sort}&type=${sort_type}`).then(function (response) {
+          console.log(response);
+
+          for (var i = 0; i < response.data.length; i++) {
+
+
+
+            set += `<div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="/${response.data[i].image_url}" alt="" />
+            </a>
+            <span class="discount">${response.data[i].categories[0].category_name}</span>
+          </div>
+          <div class="product-info">
+            <span>${response.data[i].product_name}</span>
+            <a href="/products/product/${response.data[i].id}">${response.data[i].product_description}</a>
+            <h4>${response.data[i].product_price}</h4>
+          </div>
+          <ul class="icons">
+            <li><a href="" class="product-thumb"><i class="bx bx-search"></i></a></li>
+            
+          </ul>
+        </div>`
+
+
+          }
+          console.log(set);
+          document.getElementById("tbody").innerHTML = set;
+        });
+
+      } else {
+        var plus = ++number;
+        console.log("plus", plus);
+        document.getElementById("number").value = plus;
+
+
+        console.log("else", number % 2 == 0);
+        var sort_type = 'asc';
+        await axios.post(`/products/sort-product?data=${sort}&type=${sort_type}`).then(function (response) {
+          console.log(response);
+
+          for (var i = 0; i < response.data.length; i++) {
+
+
+
+            set += `<div class="product-item">
+          <div class="overlay">
+            <a href="" class="product-thumb">
+              <img src="/${response.data[i].image_url}" alt="" />
+            </a>
+            <span class="discount">${response.data[i].categories[0].category_name}</span>
+          </div>
+          <div class="product-info">
+            <span>${response.data[i].product_name}</span>
+            <a href="/products/product/${response.data[i].id}">${response.data[i].product_description}</a>
+            <h4>${response.data[i].product_price}</h4>
+          </div>
+          <ul class="icons">
+            <li><a href="" class="product-thumb"><i class="bx bx-search"></i></a></li>
+            
+          </ul>
+        </div>`
+
+
+          }
+          console.log(set);
+          document.getElementById("tbody").innerHTML = set;
+        });
+
+      }
+
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>

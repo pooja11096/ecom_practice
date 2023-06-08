@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .otpinput{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .otpinput input{
+            width: 50%;
+            height: 40px;
+            margin: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            outline: none;
+            padding: 5px;
+        }
+        .otpinput button{
+            width: 50%;
+            height: 40px;
+            margin: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            outline: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .changepasswordform{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: none;
+        }
+        .changepasswordform input{
+            width: 50%;
+            height: 40px;
+            margin: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            outline: none;
+            padding: 5px;
+        }
+        .changepasswordform button{
+            width: 50%;
+            height: 40px;
+            margin: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            outline: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+            
+            <h1>OTP</h1>
+            <div class="otpinput">
+                <input type="number" name="otp" id="otp" placeholder="Enter OTP">
+                <button id="varify">Varify</button>
+            </div>
+            <div class="changepasswordform">
+                <form id="changepasswordForm">
+                    <input type="password" name="password" id="password" placeholder="Enter New Password">
+                    <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password">
+                    <input type="submit" value="Change">
+                </form>
+            </div>
+
+    </div>
+</body>
+<script>
+    var varify = document.getElementById('varify');
+    var changepasswordform = document.querySelector('.changepasswordform');
+    var changepasswordForm = document.getElementById('changepasswordForm');
+    var password = document.getElementById('password');
+    var confirmpassword = document.getElementById('confirmpassword');
+    
+
+
+   
+    varify.addEventListener('click',async function(){
+        let otp = document.getElementById('otp').value;
+        console.log(otp,"otp")
+        let response = await axios.post('/auth/otp',{
+            otp:otp
+        });
+        console.log("response",response);
+        if(response.data == "Incorrect otp"){
+            return alert('Incorrect otp');
+        }
+        changepasswordform.style.display = 'flex';
+    });
+
+    changepasswordForm.addEventListener('submit',async ()=>{
+        event.preventDefault();
+        let otp = document.getElementById('otp').value;
+        if(password.value != confirmpassword.value){
+            alert('Password and Confirm Password must be same');
+            return false;
+        }
+        const reset = await axios.post('/auth/reset-password',{password:password.value,otp:otp});
+        console.log(reset);
+        if(reset.data == "Password reset successfully"){
+            alert('Password Changed Successfully');
+            window.location.href = '/auth/signin';
+        }
+
+    })
+
+
+</script>
+</html>

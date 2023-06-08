@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/adminStyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@webpixels/css@1.1.5/dist/index.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="/css/crud.css">
+
+   
+</head>
+
+<body>
+
+    <main class="py-6 bg-surface-secondary">
+        <div class="container-fluid">
+
+            <div class="card shadow border-0 mb-7">
+                <div class="card-header">
+                    <div><a href="/orders/admin_dashboard">Home</a></div>
+
+                    <div class="search">
+                        <label>
+                            <input type="text" placeholder="Search here" class="search" id="search"
+                                onkeyup="searching()" />
+
+                            <ion-icon name="search-outline"></ion-icon>
+                        </label>
+                    </div>
+
+                    <div class="user"></div>
+                    <div class="header">
+                        <h5 class="mb-0">Roles</h5>
+
+
+                        <button id="addProducts" onclick="addProductPage()">Add Roles</button>
+                    </div>
+
+                </div>
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover table-nowrap">
+                        <thead class="thead-light">
+                            <input type="text" class="number" id="number" value="1" hidden>
+
+
+                            <tr>
+                                <th scope="col" id="product_name" onclick="sorting(this.id)">Role Name</th>
+                                <!-- <th scope="col" id="product_description" onclick="sorting(this.id)">Description</th>
+                                <th scope="col" id="product_price" onclick="sorting(this.id)">Price</th> -->
+                                <th scope="col">Permissions</th>
+                                <th scope="col">Delete</th>
+                                <th scope="col">Edit</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody id="tbody">
+                            <% for(var i=0;i<roles.length;i++) {%>
+
+                                <tr>
+                                  <td>
+                                    <a class="text-heading font-semibold" href="#">
+                                      <%= roles[i].name %>
+                                    </a>
+                                  </td>
+                                  <td>
+                                    <% for(j=0; j<permissions.length;j ++){ %>
+                                       <% if(roles[i].permissions[i].name == permissions[j].name){%>
+                                            <input type="checkbox" name="name" value="<%= permissions[j].name%>" checked><%= permissions[j].name%>
+
+                                        <%}else{%>
+                                            <input type="checkbox" name="name" value="<%= permissions[j].name%>"><%= permissions[j].name%>
+
+                                        <%} %>  
+                                    <% }%>
+
+                                  </td>
+                
+                               
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer border-0 py-5">
+                    <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
+                </div>
+
+
+                <div class="model-container-products" id="updateuser" style="visibility: hidden;">
+                    <div class="col-md-12">
+                        <div class="model">
+                            <div
+                                onclick="document.querySelector('.model-container-products').style.visibility = 'hidden'">
+                                <i class="fa fa-window-close" aria-hidden="true"></i>
+                            </div>
+
+                            <form id="addProductForm" enctype="multipart/form-data" action="/data" method="get">
+
+                                <fieldset>
+
+                                    <label for="name">role Name</label>
+                                    <input type="text" id="role_name" name="name">
+
+                                    <!-- <label for="product_description">Product description</label>
+                                    <input type="text" id="product_description" name="product_description">
+
+                                    <label for="product_price">Product price</label>
+                                    <input type="text" id="product_price" name="product_price"> -->
+
+                                    <% for(i=0; i <permissions.length;i ++){ %>
+
+
+                                        <input type="checkbox" name="permission_name" value="<%= permissions[i].name%>">
+                                        <% }%>
+
+                                     <!-- <label for="image_url">Select Image</label>
+                                    <input type="file" name="image_url" id="image_url"> -->
+
+                                    <label for="categories">Select Permission</label>
+                                    <select id="categoriesDropDown" name="categoriesDropDown">
+                                    </select>
+
+
+                                    <input type="submit" name="submit" value="Add">
+
+                                    <!-- <button type="submit" id="updateUserBtn" onclick="return refreshPage()">Update User</button> -->
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="model-container" id="updateuser" style="visibility: hidden;">
+                    <div class="col-md-12">
+                        <div class="model">
+                            <div onclick="document.querySelector('.model-container').style.visibility = 'hidden'">
+                                <i class="fa fa-window-close" aria-hidden="true"></i>
+                            </div>
+
+                            <form id="updateForm" enctype="multipart/form-data">
+
+                                <fieldset>
+
+                                    <label for="name">Role Name</label>
+                                    <input type="text" id="urole_name" name="name">
+
+                                    <% for(i=0; i <permissions.length;i ++){ %>
+
+                                        <input type="checkbox" name="permission_name" value="<%= permissions[i].name%>">
+                                     <% }%>
+
+                                    <!-- <label for="product_description">Product description</label>
+                                    <input type="text" id="uproduct_description" name="product_description">
+
+                                    <label for="product_price">Product price</label>
+                                    <input type="text" id="uproduct_price" name="product_price"> -->
+
+                                    <!-- <label for="image_url">Select Image</label>
+                                    <input type="file" name="image_url" id="file"> -->
+
+                                    <label for="categories">Select Category</label>
+                                    <select id="catDropDown" name="catDropDown">
+                                    </select>
+
+                                    <input type="submit" name="submit" value="Add">
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+          
+
+
+        </div>
+        </div>
+
+    </main>
+
+
+</body>
+<script>
+
+    // window.onload = () => {
+    //     getProducts()
+    //     getCategories()
+    // }
+    // async function getProducts() {
+    //     console.log("helllo");
+    //     // alert("Heyy");
+    //     const data = await axios.get('/roles/role');
+    //     console.log("fdhgjhjgh data", data)
+    //     console.log("fgl;", data.data.roles[0].permissions);
+    //     const tbody = document.querySelector('#tbody');
+    //     // console.log("dataaaaaa", data.products[0])
+    //     console.log(data.data.roles.length);
+
+    //     let html = '';
+
+    //     for (var i = 0; i < data.data.roles.length; i++) {
+
+    //         html += `
+    //             <tr>
+    //                 <td>
+    //                  ${data.data.roles[0].name}</td>
+    //                 <td id="cat_name">
+    //                 <ul>
+    //                         <li>
+    //                             ${data.data.roles[0].permissions[0].name}
+                                
+    //                         </li>
+                            
+                            
+    //                 </ul>
+    //                 </td>
+    //                 <td><button onclick="deleteProduct('${data.data.roles[0].id}')">delete</button></td>
+    //                 <td><button onclick="editProduct('${data.data.roles[0].id}')">edit</button></td>
+    //             </tr>
+    //             `
+
+    //         // catnames +=``
+    //         tbody.innerHTML = html;
+
+    //     }
+
+    // }
+   
+   
+    async function getCategories() {
+
+        const categoriesData = await axios.get('/roles/permissions');
+        console.log("categoriesData", categoriesData)
+
+        for (let catagory of categoriesData.data) {
+
+            let option = document.createElement("option");
+            option.setAttribute('value', catagory.id);
+
+            let optionText = document.createTextNode(catagory.category_name);
+            option.appendChild(optionText);
+
+            let option1 = document.createElement("option");
+            option1.setAttribute('value', catagory.id);
+
+            let optionText1 = document.createTextNode(catagory.category_name);
+            option1.appendChild(optionText1);
+
+            catDropDown.appendChild(option);
+            categoriesDropDown.appendChild(option1);
+        }
+    }
+
+    console.log(catDropDown);
+    console.log(categoriesDropDown);
+    const add = document.querySelector('#addProducts');
+    add.addEventListener('click', () => {
+        document.querySelector('.model-container-products').style.visibility = 'visible';
+    })
+
+    const form = document.querySelector('#addProductForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let name = document.getElementById("product_name").value;
+        console.log("name", name);
+       
+
+        let catagory = document.getElementById("categoriesDropDown").value;
+        console.log("catagory007", catagory)
+        let categoryIds = catagory;
+        console.log("categoryIds", categoryIds, typeof (categoryIds))
+        let formData = new FormData(form);
+        console.log("formaData", formData);
+
+        let res = await axios.post('/roles/permissions/', formData)
+        console.log("res", res);
+        document.querySelector('.model-container-products').style.visibility = 'hidden';
+
+        document.getElementById("name").value = '';
+        // document.getElementById("product_description").value = '';
+        // document.getElementById("product_price").value = '';
+        // document.getElementById("file").value = '';
+        getProducts();
+    })
+
+    // const editProduct = async (id) => {
+    async function editProduct(id) {
+        console.log("edit...");
+        // e.preventDefault();
+        // const res = await axios.get(`/products/product/edit/${id}`);
+        const res = await axios.get(`/roles/${id}`);
+        console.log("ress", res);
+
+        const user = res.data;
+        console.log("product.....", user);
+        console.log("user111111", user.categories[0].id);
+
+
+        // document.getElementById('uid').value = user.id;
+        document.getElementById('urole_name').value = user.product_name;
+        // document.getElementById('uproduct_description').value = user.product_description;
+        // document.getElementById('uproduct_price').value = user.product_price;
+        console.log("catid", document.getElementById('catDropDown').value);
+        document.getElementById('catDropDown').value = user.categories[0].id;
+
+
+        document.querySelector('.model-container').style.visibility = 'visible';
+
+
+        const form = document.querySelector('#updateForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const product_n = document.getElementById("urole_name").value;
+            console.log("product_name", product_n);
+
+            console.log("price", +product_price);
+            const catagory = document.getElementById("catDropDown").value;
+            console.log("adscasc", catagory, typeof (catagory))
+            // let categoryIds = catagory;
+            // console.log("catIds",categoryIds,typeof(categoryIds))
+            const formData = new FormData(form);
+            console.log("fff", formData);
+            const formDataObj = Object.fromEntries(formData.entries());
+            console.log("formDataObj", formDataObj);
+            console.log("formDataObj", formDataObj.product_name);
+
+            // console.log("formaData", formData);
+
+
+            const res = await axios.put(`/roles/${id}`,
+                {
+                    name: document.getElementById('urole_name').value,
+                    permissions: document.getElementById('catDropDown').value
+
+                    // categories: {
+                    //     connect: {
+                    //         id: catagory
+                    //     }
+                    // }
+                    // catDropDown: category
+
+                });
+            console.log("ressaso", res)
+            document.querySelector('.model-container').style.visibility = 'hidden';
+            getProducts();
+        })
+    }
+
+
+    // async function deleteProduct(id) {
+    //     let res = await axios.delete(`/products/${id}`);
+    //     console.log(res);
+    //     getProducts();
+    // }
+
+    // async function searching() {
+
+    //     var val = document.getElementById("search").value
+    //     console.log("search", val);
+    //     var set = '';
+    //     await axios.post(`/products/search-product?data=${val}`).then(function (response) {
+    //         console.log("datt ===", response.data);
+
+
+    //         for (var i = 0; i < response.data.length; i++) {
+    //             // set += `<tr><td>${response.data[i].product_name}</td><td>${response.data[i].product_description}</td><td>${response.data[i].product_price}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+
+    //             set += `
+    //             <tr>
+    //                 <td>
+    //                 <img src="/${response.data[i].image_url}" alt="" class="avatar avatar-sm rounded-circle me-2">
+                    
+    //                 ${response.data[i].product_name}</td>
+    //                 <td>${response.data[i].product_description}</td>
+    //                 <td>${response.data[i].product_price}</td>
+    //                 <td>
+    //                 <ul>
+    //                         <li>
+    //                             ${response.data[i].categories[0].category_name}
+                                
+    //                         </li>
+                            
+                            
+    //                 </ul>
+    //                 </td>
+    //                 <td><button onclick="deleteProduct(' ${response.data[i].id}')">delete</button></td>
+    //                 <td><button onclick="editProduct(' ${response.data[i].id}')">edit</button></td>
+    //             </tr>
+    //             `
+    //         }
+    //         console.log(set);
+    //         document.getElementById("tbody").innerHTML = set;
+    //     });
+
+    // }
+
+    // async function pagination(page) {
+    //     console.log(page);
+    //     var set = '';
+
+    //     await axios.post(`/products/page?page=${page}`).then(function (response) {
+    //         console.log("pag data..", response.data);
+    //         for (var i = 0; i < response.data.length; i++) {
+    //             // set += `<tr><td>${response.data[i].name}</td><td>${response.data[i].email}</td><td>${response.data[i].role.name}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+
+    //             set += `
+    //             <tr>
+    //                 <td>
+    //                     <img src="/${response.data[i].image_url}" alt="" class="avatar avatar-sm rounded-circle me-2">
+                    
+    //                 ${response.data[i].product_name}</td>
+    //                 <td>${response.data[i].product_description}</td>
+    //                 <td>${response.data[i].product_price}</td>
+    //                 <td>
+    //                 <ul>
+    //                         <li>
+    //                             ${response.data[i].categories[0].category_name}
+                                
+    //                         </li>
+                            
+                            
+    //                 </ul>
+    //                 </td>
+    //                 <td><button onclick="deleteProduct('${response.data[i].id}')">delete</button></td>
+    //                 <td><button onclick="editProduct('${response.data[i].id}')">edit</button></td>
+    //             </tr>
+    //             `
+
+    //         }
+    //         console.log(set);
+    //         document.getElementById("tbody").innerHTML = set;
+
+    //     });
+    // }
+
+
+
+
+    // async function sorting(sort) {
+    //     console.log(sort);
+    //     var set = '';
+    //     number = document.getElementById("number").value;
+    //     console.log(number);
+    //     if (number % 2 == 0) {
+    //         var plus = ++number;
+    //         document.getElementById("number").value = plus;
+    //         console.log("plus", plus);
+    //         console.log("if", number % 2 == 0);
+    //         var sort_type = 'desc';
+    //         await axios.post(`/products/sort-product?data=${sort}&type=${sort_type}`).then(function (response) {
+    //             console.log(response);
+
+    //             for (var i = 0; i < response.data.length; i++) {
+
+    //                 // set += `<tr><td>${response.data[i].name}</td><td>${response.data[i].email}</td><td>${response.data[i].role.name}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+    //                 set += `
+    //             <tr>
+    //                 <td>
+    //                     <img src="/${response.data[i].image_url}" alt="" class="avatar avatar-sm rounded-circle me-2">
+                    
+    //                 ${response.data[i].product_name}</td>
+    //                 <td>${response.data[i].product_description}</td>
+    //                 <td>${response.data[i].product_price}</td>
+    //                 <td>
+    //                 <ul>
+    //                         <li>
+    //                             ${response.data[i].categories[0].category_name}
+                                
+    //                         </li>
+                            
+                            
+    //                 </ul>
+    //                 </td>
+    //                 <td><button onclick="deleteProduct(' ${response.data[i].id}')">delete</button></td>
+    //                 <td><button onclick="editProduct(' ${response.data[i].id}')">edit</button></td>
+    //             </tr>
+    //             `
+
+
+    //             }
+    //             console.log(set);
+    //             document.getElementById("tbody").innerHTML = set;
+    //         });
+
+    //     } else {
+    //         var plus = ++number;
+    //         console.log("plus", plus);
+    //         document.getElementById("number").value = plus;
+
+
+    //         console.log("else", number % 2 == 0);
+    //         var sort_type = 'asc';
+    //         await axios.post(`/products/sort-product?data=${sort}&type=${sort_type}`).then(function (response) {
+    //             console.log(response);
+
+    //             for (var i = 0; i < response.data.length; i++) {
+
+    //                 // set += `<tr><td>${response.data[i].name}</td><td>${response.data[i].email}</td><td>${response.data[i].role.name}</td><td class="text-end"><button type="button" id="editbutton" class="login-trigger btn btn-sm btn-neutral" data-target="#login" data-toggle="modal" onclick="return editUser('${response.data[i].id}')">Edit</button><button type="button" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick=" userdelete('${response.data[i].id}')"><i class="bi bi-trash"></i></button></td></tr>`
+    //                 set += `
+    //             <tr>
+    //                 <td>
+    //                 <img src="/${response.data[i].image_url}" alt="" class="avatar avatar-sm rounded-circle me-2">
+
+    //                 ${response.data[i].product_name}</td>
+    //                 <td>${response.data[i].product_description}</td>
+    //                 <td>${response.data[i].product_price}</td>
+    //                 <td>
+    //                 <ul>
+    //                         <li>
+    //                             ${response.data[i].categories[0].category_name}
+                                
+    //                         </li>
+                            
+                            
+    //                 </ul>
+    //                 </td>
+    //                 <td><button onclick="deleteProduct(' ${response.data[i].id}')">delete</button></td>
+    //                 <td><button onclick="editProduct(' ${response.data[i].id}')">edit</button></td>
+    //             </tr>
+    //             `
+
+
+    //             }
+    //             console.log(set);
+    //             document.getElementById("tbody").innerHTML = set;
+    //         });
+
+    //     }
+
+    // }
+
+
+</script>
+
+</html>
