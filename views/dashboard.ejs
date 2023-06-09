@@ -326,11 +326,16 @@
                                             </td>
 
                                             <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-neutral">View</a>
+                                                <a href="/orders/orderbyid/<%=orderlist[i].id%>"
+                                                    class="btn btn-sm btn-neutral" onclick="orderDetail()">View</a>
                                                 <button type="button" onclick="removeOrder(`<%=orderlist[i].id%>`)"
                                                     class="btn btn-sm btn-square btn-neutral text-danger-hover">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
+                                                <!-- <button type="button" onclick="showDetails(`<%=orderlist[i].id%>`)"
+                                                    class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                                    View<i class="bi bi-trash"></i>
+                                                </button> -->
                                             </td>
                                         </tr>
                                         <% } %>
@@ -360,6 +365,20 @@
     </div>
 
     <script>
+
+
+        async function showDetails(id) {
+            console.log("orderid", id);
+            const data = await axios.get(`/orders/orderdetails`)
+
+            // const data = await axios.get(`/orders/orderbyid/${id}`)
+            console.log(" data", data);
+        }
+
+        async function orderDetail() {
+            await axios.get(`/orders`)
+        }
+
         async function pagination(page) {
             console.log(page);
             var set = '';

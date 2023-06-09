@@ -60,8 +60,6 @@ model Category {
 }
 
 
-
-
 model Cart {
   id        String  @id @default(uuid())
   userId    String

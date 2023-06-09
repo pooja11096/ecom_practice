@@ -38,7 +38,6 @@ export class OrdersService {
         where: { userId: uid },
       });
 
-
       for (var i = 0; i < cartItems.length; i++) {
         const orderItems = await this.prismaService.orderItem.create({
           data: {
@@ -57,7 +56,6 @@ export class OrdersService {
       });
 
       res.redirect('/cart/cart_page');
-
     } catch (err) {
       throw err;
     }
@@ -90,17 +88,39 @@ export class OrdersService {
     return { orders };
   }
 
+  async findOrderById(id: string, req: Request, res: Response) {
+    const orderById = await this.prismaService.orderItem.findMany({
+      where: {
+        orderId: id,
+      },
+      include: {
+        product: true,
+        order: {
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    console.log(orderById);
+
+    return { orderById };
+  }
   update(id: string, updateOrderDto: UpdateOrderDto) {
     return `This action updates a #${id} order`;
   }
 
   async removeOrder(id: string) {
-    return await this.prismaService.order.delete({where: {id:id}})
+    return await this.prismaService.order.delete({ where: { id: id } });
   }
 
   async pagination(req, res) {
     try {
-     
       const page = req.query.page || 1;
       const perPage = 4;
 
@@ -109,9 +129,8 @@ export class OrdersService {
       } else {
         var skip = 0;
       }
-    
-      const category = await this.prismaService.order.findMany({
 
+      const category = await this.prismaService.order.findMany({
         skip: skip,
         take: perPage,
         include: { user: true },
@@ -123,10 +142,8 @@ export class OrdersService {
     }
   }
 
-  async adminOrders(req,res){
-    const total = await this.prismaService.order.count({
-      
-    });
+  async adminOrders(req, res) {
+    const total = await this.prismaService.order.count({});
 
     const page = req.query.page || 1;
     const perPage = 4;
@@ -134,16 +151,13 @@ export class OrdersService {
     const skip = page > 0 ? perPage * (page - 1) : 0;
 
     const query = {
-      include:{user: true},
+      include: { user: true },
       take: perPage,
       skip: skip,
     };
     const lastPage = Math.ceil(total / perPage);
-    const orderlist = await this.prismaService.order.findMany(query)
+    const orderlist = await this.prismaService.order.findMany(query);
 
-    return {orderlist,lastPage}
-    
+    return { orderlist, lastPage };
   }
-
-
 }

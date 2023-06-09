@@ -366,7 +366,7 @@
                                     <input type="file" name="image_url" id="image_url">
 
                                     <label for="categories">Select category</label>
-                                    <select id="categoriesDropDown" name="categoriesDropDown">
+                                    <select id="categoriesDropDown" name="categoriesDropDown" multiple>
                                     </select>
 
 
@@ -405,7 +405,7 @@
                                     <input type="file" name="image_url" id="file"> -->
 
                                     <label for="categories">Select Category</label>
-                                    <select id="catDropDown" name="catDropDown">
+                                    <select id="catDropDown" name="catDropDown" multiple>
                                     </select>
 
                                     <input type="submit" name="submit" value="Add">
@@ -457,6 +457,11 @@
 
         for (var i = 0; i < data.data.length; i++) {
 
+            var cats = '';
+            for (var j = 0; j < data.data[i].categories.length; j++) {
+                cats += data.data[i].categories[j].category_name
+            }
+
             html += `
                 <tr>
                     <td>
@@ -467,7 +472,7 @@
                     <td id="cat_name">
                     <ul>
                             <li>
-                                ${data.data[i].categories[0].category_name}
+                                ${cats}
                                 
                             </li>
                             

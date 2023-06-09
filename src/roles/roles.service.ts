@@ -41,8 +41,9 @@ export class RolesService {
     // return `This action returns all roles`;
   }
 
-  async getAllPermissions() {
-    return await this.prismaService.permission.findMany({});
+  async getAllPermissions(req: Request, res: Response) {
+    const permission = await this.prismaService.permission.findMany({});
+    res.send(permission);
   }
 
   async createPermissions(permission_name: string) {
@@ -53,9 +54,11 @@ export class RolesService {
     });
   }
 
-  async updatePermission(roleId: number, permissionId: string) {
+  async updatePermission(roleId: number, permissionId: string, req, res) {
+    console.log('update permission');
+
     await this.prismaService.role.update({
-      where: { id: roleId },
+      where: { id: +roleId },
       data: {
         permissions: {
           set: [],
@@ -64,7 +67,7 @@ export class RolesService {
     });
 
     return await this.prismaService.role.update({
-      where: { id: roleId },
+      where: { id: 1 },
       data: {
         permissions: {
           connect: { id: permissionId },
@@ -74,7 +77,12 @@ export class RolesService {
   }
 
   async findOne(id: number) {
-    return await this.prismaService.role.findUnique({ where: { id: id } });
+    return await this.prismaService.role.findUnique({
+      where: { id: id },
+      include: {
+        permissions: true,
+      },
+    });
     // return `This action returns a #${id} role`;
   }
 

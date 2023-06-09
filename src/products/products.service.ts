@@ -22,6 +22,8 @@ export class ProductsService {
     categoryIds: string,
   ) {
     try {
+      // categoriesId
+
       return await this.prismaService.product.create({
         data: {
           product_name: product_name,
@@ -29,6 +31,10 @@ export class ProductsService {
           product_price: +product_price,
           image_url: file.filename,
           categories: {
+            // create:{
+            //   // connect: {},
+
+            // }
             connect: { id: categoryIds },
           },
         },
@@ -121,6 +127,7 @@ export class ProductsService {
           product_price: createProductDto.product_price,
           image_url: file,
           categories: {
+            // connect: {},
             connect: {
               id: categoryId,
             },

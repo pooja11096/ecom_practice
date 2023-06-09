@@ -22,7 +22,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Roles } from 'src/auth/entities/roles.decorator';
-import { Role } from 'src/auth/entities/role.enum';
+import { Permissions, Role } from 'src/auth/entities/role.enum';
 import { extname } from 'path';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 import { Query as ExpressQuery } from 'express-serve-static-core';
@@ -100,6 +100,7 @@ export class ProductsController {
   }
 
   @Get('/user_product')
+  // @Permissions(Permissions.CREATE)
   @Roles(Role.USER)
   @Render('shop')
   userProductPage(@Req() req, @Res() res) {

@@ -53,11 +53,23 @@ export class OrdersController {
     return this.ordersService.findOrderByUser(req, res);
   }
 
+  // @Get('orderdetails')
+  // @Render('order_detail')
+  // orderDetails(@Res() res, @Req() req) {
+  //   res.redirect('/orders/oderbyid/:id');
+  // }
+
+  @Get('/orderbyid/:id')
+  @Render('order_detail')
+
+  findOrderById(@Param('id') id: string, @Req() req, @Res() res) {
+    return this.ordersService.findOrderById(id, req, res);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(id, updateOrderDto);
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Get('admin_dashboard')
@@ -76,9 +88,7 @@ export class OrdersController {
 
   @Post('/page')
   async Pagination(@Req() req, @Res() res) {
-
     const data = await this.ordersService.pagination(req, res);
     res.send(data);
   }
-
 }

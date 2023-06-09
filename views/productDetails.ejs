@@ -17,12 +17,7 @@
   <!-- Navigation -->
   <div class="top-nav">
     <div class="container d-flex">
-      <!-- <p>Order Online Or Call Us: (001) 2222-55555</p>
-        <ul class="d-flex">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul> -->
+
     </div>
   </div>
   <div class="navigation">
@@ -270,6 +265,9 @@
 
       // console.log(product.product_price);
       // e.preventDefault();
+      console.log("jdfgkh", document.cookie);
+      const token = document.cookie;
+
       console.log(price);
       const quantity = document.getElementById('quantity').value;
       console.log(quantity);
@@ -277,32 +275,39 @@
       const subtotal = quantity * price;
       console.log(subtotal);
 
-      var toastMixin = Swal.mixin({
-        toast: true,
-        icon: 'success',
-        title: 'General Title',
-        animation: false,
-        position: 'top-right',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      });
+      if (token) {
+        var toastMixin = Swal.mixin({
+          toast: true,
+          icon: 'success',
+          title: 'General Title',
+          animation: false,
+          position: 'top-right',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
 
-      toastMixin.fire({
-        animation: true,
-        title: 'Product successfully added to cart'
-      });
+        toastMixin.fire({
+          animation: true,
+          title: 'Product successfully added to cart'
+        });
 
-      const res = await axios.post(`/cart/cart`, {
-        productId: pid,
-        quantity: +quantity,
-        total: +subtotal
-      })
-      console.log("res", res);
+        const res = await axios.post(`/cart/cart`, {
+          productId: pid,
+          quantity: +quantity,
+          total: +subtotal
+        })
+        console.log("res", res);
+      } else {
+        location.assign('/auth/signin')
+        console.log("login  urself");
+      }
+
+
 
 
 

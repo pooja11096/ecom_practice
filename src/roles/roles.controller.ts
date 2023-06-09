@@ -25,21 +25,22 @@ export class RolesController {
     return this.rolesService.create(createRoleDto);
   }
 
-  // @Get()
-  // @Render('r_p.ejs')
-  // findAll(@Req() req, @Res() res) {
-  //   return this.rolesService.findAll();
-  // }
+  @Get()
+  @Render('r_p.ejs')
+  findAll(@Req() req, @Res() res) {
+    return this.rolesService.findAll();
+  }
 
   @Get('/role')
-  @Render('r_p')
+  @Render('role_permission')
+  // @Render('roless')
   findAllR() {
     return this.rolesService.findAll();
   }
 
   @Get('/permissions')
-  getPermission() {
-    return this.rolesService.getAllPermissions();
+  getPermission(@Req() req, @Res() res) {
+    return this.rolesService.getAllPermissions(req, res);
   }
 
   @Post('/permissions')
@@ -52,12 +53,14 @@ export class RolesController {
     return this.rolesService.findOne(+id);
   }
 
-  @Put('id')
+  @Put('/:id')
   updateP(
-    @Param('roleId') roleId: number,
-    @Body('permissionId') permissionId: string,
+    @Param('id') roleId: number,
+    @Body('id') permissionId: string,
+    @Req() req,
+    @Res() res,
   ) {
-    return this.rolesService.updatePermission(+roleId, permissionId);
+    return this.rolesService.updatePermission(+roleId, permissionId, req, res);
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
