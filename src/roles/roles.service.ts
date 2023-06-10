@@ -54,7 +54,7 @@ export class RolesService {
     });
   }
 
-  async updatePermission(roleId: number, permissionId: string, req, res) {
+  async updatePermission(roleId: number, permissionId: string) {
     console.log('update permission');
 
     await this.prismaService.role.update({
@@ -67,11 +67,62 @@ export class RolesService {
     });
 
     return await this.prismaService.role.update({
-      where: { id: 1 },
+      where: { id: +roleId },
       data: {
         permissions: {
           connect: { id: permissionId },
         },
+      },
+      include: {
+        permissions: true,
+      },
+    });
+  }
+
+  async tryupdatePermission(roleId: number, permissionIds: string[]) {
+    console.log('update permission');
+    console.log('>>>', permissionIds);
+
+    await this.prismaService.role.update({
+      where: { id: +roleId },
+      data: {
+        permissions: {
+          set: [],
+        },
+      },
+    });
+
+    // const role = await this.prismaService.role.findUnique({
+    //   where: { id: roleId },
+    //   include: { permissions: true }, // Include the current permissions associated with the role
+    // });
+
+    // console.log('rolee', role);
+
+    // // Fetch or create the permissions based on the input data
+    // const permissions = await this.prismaService.permission.findMany({
+    //   where: { id: { in: permissionIds } },
+    // });
+
+    // console.log('permissionss', permissions);
+
+    // // Associate the permissions with the role
+    // role.permissions = [...role.permissions, ...permissions];
+
+    return await this.prismaService.role.update({
+      where: { id: +roleId },
+      data: {
+        permissions: {
+          connect: permissionIds.map((id) => ({ id })),
+        },
+      },
+      // data: {
+      //   permissions: {
+      //     connect: permissionId.map((id) => ({ id })),
+      //   },
+      // },
+      include: {
+        permissions: true,
       },
     });
   }

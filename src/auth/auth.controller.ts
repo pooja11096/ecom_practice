@@ -116,13 +116,13 @@ export class AuthController {
     return user;
   }
 
-  @Get('alluser')
-  @UseGuards(JwtAuthGuard)
-  @Render('admin')
-  findAll(@Req() req: any, @Res() res) {
+  // @Get('alluser')
+  // @UseGuards(JwtAuthGuard)
+  // @Render('admin')
+  // findAll(@Req() req: any, @Res() res) {
 
-    return this.authService.getAllUsers(req, res);
-  }
+  //   return this.authService.getAllUsers(req, res);
+  // }
 
   @Get('search')
   async Search(@Req() req, @Res() res) {

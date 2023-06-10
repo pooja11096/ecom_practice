@@ -23,6 +23,8 @@ import { PrismaClient } from '@prisma/client';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from 'src/auth/entities/roles.decorator';
 import { Role } from 'src/auth/entities/role.enum';
+import { Permissions } from 'src/auth/entities/permissions.decorator';
+import { Permission } from 'src/auth/entities/permissions.enum';
 import { CategoriesService } from 'src/categories/categories.service';
 const prisma = new PrismaClient();
 
@@ -60,12 +62,14 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('admin_dashboard')
   @Roles(Role.ADMIN)
+  @Permissions(Permission.READ)
   @Render('dashboard')
   renderHome() {}
 
   @UseGuards(JwtAuthGuard)
   @Get('/user')
   @Roles(Role.ADMIN)
+  @Permissions(Permission.MANAGE_USER)
   @Render('users_crud')
   getAllUsers(@Req() req, @Res() res) {
     return this.usersService.getAllUsers(req, res);
@@ -107,6 +111,7 @@ export class UsersController {
   // }
 
   @Get('user/:id')
+  // @Permissions(Permission.CREATE)
   getUserForEdit(@Param('id') id: string, @Response() res) {
     return this.usersService.findUser(id, res);
   }

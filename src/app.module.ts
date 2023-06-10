@@ -9,6 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { APP_GUARD } from '@nestjs/core';
 import RolesGuard from './auth/guards/roles.guard';
+import PermissionsGuard from './auth/guards/permissions.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule } from '@nestjs/config';
@@ -33,6 +34,8 @@ import { OrderitemsService } from './orderitems/orderitems.service';
   {
     provide: APP_GUARD,
     useClass: RolesGuard
-  }],
+  }, {provide: APP_GUARD,
+    useClass: PermissionsGuard}
+],
 })
 export class AppModule {}

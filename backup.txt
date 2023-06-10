@@ -1,0 +1,36 @@
+<div class="data">
+                                                <% if(permissions[i].name=='Manage Categories' ) {%>
+                                                    <%= permissions[i].name%><input type="checkbox" class="permissions"
+                                                            id="permission_name" ,name="id"
+                                                            value="<%= permissions[i].id%>" checked>
+                                                        <% } %>
+                                                            <% else %>
+                                                                <%= permissions[i].name%><input type="checkbox"
+                                                                        class="permissions" id="permission_name"
+                                                                        ,name="id" value="<%= permissions[i].id%>">
+                                                                    <%}%>
+                                            </div>
+
+
+
+                                                 <!-- <div class="data">
+                                            <% for(j=0; j <permissions.length; j++){ %>
+
+                                                <% for(i=0; i<roles[0].permissions.length; i++){ %>
+                                                    <% if(permissions[j].name==roles[i].permissions[i].name ){ %>
+
+                                                        <%= permissions[j].name%><input type="checkbox"
+                                                                class="permissions" id="permission_name" ,name="id"
+                                                                value="<%= permissions[i].id%>" checked>
+                                                            <% } else{ %>
+
+                                                                <%= permissions[j].name%><input type="checkbox"
+                                                                        class="permissions" id="permission_name"
+                                                                        ,name="id" value="<%= permissions[i].id%>">
+                                                                    <% } %>
+                                                                        <% } %>
+
+
+
+
+                                        </div> -->

@@ -14,6 +14,8 @@ import {
 } from '@nestjs/common';
 import { Role } from 'src/auth/entities/role.enum';
 import { Roles } from 'src/auth/entities/roles.decorator';
+import { Permission } from 'src/auth/entities/permissions.enum';
+import { Permissions } from 'src/auth/entities/permissions.decorator'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -53,6 +55,7 @@ export class CategoriesController {
 
   @Get()
   @Roles(Role.ADMIN)
+  @Permissions(Permission.MANAGE_CATEGORY)
   @Render('categories_crud')
   findAll(@Req() req, @Res() res) {
     return this.categoriesService.findAllCategory(req, res);

@@ -44,7 +44,7 @@ export class RolesController {
   }
 
   @Post('/permissions')
-  createPermission(@Body('permission_name') permission_name: string) {
+  createPermission(@Body('name') permission_name: string) {
     return this.rolesService.createPermissions(permission_name);
   }
 
@@ -56,11 +56,9 @@ export class RolesController {
   @Put('/:id')
   updateP(
     @Param('id') roleId: number,
-    @Body('id') permissionId: string,
-    @Req() req,
-    @Res() res,
+    @Body('permissionIds') permissionIds: string[],
   ) {
-    return this.rolesService.updatePermission(+roleId, permissionId, req, res);
+    return this.rolesService.tryupdatePermission(+roleId, permissionIds);
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {

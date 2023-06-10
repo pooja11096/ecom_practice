@@ -24,6 +24,12 @@
             display: flex;
             flex-direction: row;
         }
+
+        #indiv {
+            /* display: flex; */
+            /* display: flex;
+            flex-direction: row; */
+        }
     </style>
 
 
@@ -78,10 +84,10 @@
                             <% for(var i=0;i<roles.length;i++) {%>
 
                                 <tr>
-                                    <td>
-                                        <a class="text-heading font-semibold" href="#">
-                                            <%= roles[i].name %>
-                                        </a>
+                                    <td id="main_role_name">
+
+                                        <%= roles[i].name %>
+
                                     </td>
                                     <td>
 
@@ -153,17 +159,15 @@
                                     <input type="text" id="urole_name" name="name">
 
 
-                                    <div class="permissions">
+                                    <div class="permissions" id="permissions_data">
 
-                                        <% for(i=0; i <permissions.length;i ++){ %>
+                                        <% for(j=0; j <permissions.length; j++){ %>
 
-                                            <div class="data">
-                                                <%= permissions[i].name%><input type="checkbox" class="permissions"
-                                                        id="permission_name" ,name="name"
-                                                        value="<%= permissions[i].id%>">
-                                            </div>
+                                            <%= permissions[j].name%><input type="checkbox" class="permissions"
+                                                    id="permission_name" ,name="id" value="<%= permissions[j].id%>">
 
-                                            <%} %>
+                                                <% } %>
+
                                     </div>
 
                                     <input type="submit" name="submit" value="Add">
@@ -184,6 +188,8 @@
 
 </body>
 <script>
+
+    let p = 1;
 
     window.onload = () => {
         //     getProducts()
@@ -229,7 +235,7 @@
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         let name = document.getElementById("product_name").value;
-        console.log("name", name);
+        // console.log("name", name);
 
 
         let catagory = document.getElementById("categoriesDropDown").value;
@@ -251,7 +257,13 @@
     })
 
     // const editProduct = async (id) => {
+
+
+
+
+
     async function editProduct(id) {
+
         console.log("edit...");
         // e.preventDefault();
         // const res = await axios.get(`/products/product/edit/${id}`);
@@ -260,13 +272,66 @@
 
         const permissions = await axios.get('/roles/permissions');
         console.log("permission", permissions);
+        console.log("permission length", permissions.data.length);
 
         const user = res.data;
 
         document.getElementById('urole_name').value = user.name;
 
+        var div = document.querySelector('#permissions_data');
+        console.log("div", div);
+
+        // console.log(res.data.name == );
 
         document.querySelector('.model-container').style.visibility = 'visible';
+
+
+        console.log("pp0", p);
+
+        // if (p == 1) {
+
+        //     for (var i = 0; i < permissions.data.length; i++) {
+
+        //         for (var j = 0; j < res.data.permissions.length; j++) {
+        //             var inDiv = document.createElement('div');
+        //             inDiv.setAttribute('id', 'indiv');
+
+
+        //             console.log("hello");
+        //             var check = document.createElement('input');
+        //             console.log("check", check);
+        //             check.type = 'checkbox';
+        //             check.value = permissions.data[i].id;
+        //             check.name = 'id'
+
+        //             if (permissions.data[i].name == res.data.permissions[j].name) {
+        //                 check.checked = true;
+        //             }
+
+        //             var label = document.createElement('label');
+        //             label.htmlFor = "permission name";
+        //             label.innerHTML = permissions.data[i].name;
+
+        //             inDiv.appendChild(label)
+        //             inDiv.appendChild(check)
+
+
+        //             document.querySelector('#permissions_data').appendChild(inDiv);
+
+
+
+
+        //         }
+        //     }
+
+
+        //     p++;
+        // }
+
+
+
+
+
 
 
         const form = document.querySelector('#updateForm');
@@ -293,9 +358,10 @@
             const idd = parseInt(id);
             console.log(typeof idd);
 
-            const res = await axios.put(`/roles/1`,
+            const res = await axios.put(`/roles/${id}`,
                 {
-                    permissions: 'dfa1b7c4-e8b4-4ab4-bf07-b2a3d18d83c6'
+                    permissionIds: arr
+
 
                 }
             );

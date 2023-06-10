@@ -13,6 +13,8 @@ import {
 } from '@nestjs/common';
 import { Roles } from 'src/auth/entities/roles.decorator';
 import { Role } from 'src/auth/entities/role.enum';
+import { Permissions } from 'src/auth/entities/permissions.decorator';
+import { Permission } from 'src/auth/entities/permissions.enum';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
@@ -47,10 +49,10 @@ export class CartController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Permissions(Permission.VIEW_CART)
   @Get('/cart_page')
-  getCartPage(@Req() req, @Res() res) { 
+  getCartPage(@Req() req, @Res() res) {
     return this.cartService.getAllCart(req, res);
-    
   }
 
   @UseGuards(JwtAuthGuard)

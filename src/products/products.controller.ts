@@ -22,7 +22,9 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Roles } from 'src/auth/entities/roles.decorator';
-import { Permissions, Role } from 'src/auth/entities/role.enum';
+import { Role } from 'src/auth/entities/role.enum';
+import { Permissions } from 'src/auth/entities/permissions.decorator';
+import { Permission } from 'src/auth/entities/permissions.enum';
 import { extname } from 'path';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 import { Query as ExpressQuery } from 'express-serve-static-core';
@@ -87,6 +89,7 @@ export class ProductsController {
   }
 
   @Get('/product_by_cat/:category_name')
+  @Permissions(Permission.VIEW_PRODUCT)
   async productByCategory(
     @Param('category_name') category_name: string,
     @Res() res,
@@ -102,6 +105,7 @@ export class ProductsController {
   @Get('/user_product')
   // @Permissions(Permissions.CREATE)
   @Roles(Role.USER)
+  @Permissions(Permission.VIEW_PRODUCT)
   @Render('shop')
   userProductPage(@Req() req, @Res() res) {
     return this.productsService.usersAllProducts(req, res);
@@ -109,6 +113,7 @@ export class ProductsController {
 
   @Get('p_page')
   @Roles(Role.ADMIN)
+  @Permissions(Permission.MANAGE_PRODUCT)
   @Render('create_product')
   productPage(@Req() req, @Res() res) {
     return this.productsService.findAllProducts(req, res);

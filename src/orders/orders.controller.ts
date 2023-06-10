@@ -53,15 +53,8 @@ export class OrdersController {
     return this.ordersService.findOrderByUser(req, res);
   }
 
-  // @Get('orderdetails')
-  // @Render('order_detail')
-  // orderDetails(@Res() res, @Req() req) {
-  //   res.redirect('/orders/oderbyid/:id');
-  // }
-
   @Get('/orderbyid/:id')
   @Render('order_detail')
-
   findOrderById(@Param('id') id: string, @Req() req, @Res() res) {
     return this.ordersService.findOrderById(id, req, res);
   }

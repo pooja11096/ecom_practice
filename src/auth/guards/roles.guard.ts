@@ -32,6 +32,8 @@ export default class RolesGuard implements CanActivate {
       Buffer.from(token.split('.')[1], 'base64').toString('utf-8'),
     );
 
+    console.log('usersrr', user);
+
     if (user.roleId == 1) {
       var hasRole = 'User';
     } else {

@@ -45,7 +45,7 @@ export class AuthService {
           roleId,
         },
       });
-      
+
       res.redirect('/auth/signin');
     } catch (err) {
       throw err;
@@ -57,6 +57,29 @@ export class AuthService {
       const findUser = await this.prismaService.user.findUnique({
         where: { email },
       });
+
+      const findPermissions = await this.prismaService.role.findUnique({
+        where: { id: findUser.roleId },
+        include: {
+          permissions: true,
+        },
+      });
+
+      // console.log('users permissions', findPermissions);
+
+      // const permi = Object.assign({}, findPermissions.permissions);
+      const permi = findPermissions.permissions;
+      // console.log('permii', permi);
+      // console.log('>>>', permi[0].name);
+
+      const ob = {};
+
+      for (var i = 0; i < permi.length; i++) {
+        // console.log(permi[i].name);
+        ob[i] = permi[i].name;
+      }
+
+      console.log('obb', ob);
 
       if (!findUser) {
         throw new BadRequestException('Wrong Credentials');
@@ -75,7 +98,10 @@ export class AuthService {
         id: findUser.id,
         email: findUser.email,
         roleId: findUser.roleId,
+        permissions: ob,
       });
+
+      console.log('token', token);
 
       if (!token) {
         throw new ForbiddenException();
@@ -113,7 +139,12 @@ export class AuthService {
     return await bcrypt.compare(args.password, args.hash);
   }
 
-  async signToken(args: { id: string; email: string; roleId: number }) {
+  async signToken(args: {
+    id: string;
+    email: string;
+    roleId: number;
+    permissions: object;
+  }) {
     const payload = args;
     return this.jwtService.signAsync(payload, { secret: jwtSecret });
   }
@@ -198,7 +229,6 @@ export class AuthService {
     });
     return 'Password reset successfully';
   }
-
 
   async search(req, res) {
     try {
