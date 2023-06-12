@@ -36,6 +36,50 @@ const prisma = new PrismaClient();
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Post('/createproduct')
+  @UseInterceptors(
+    FileInterceptor('image_url', {
+      storage: diskStorage({
+        destination: './public',
+        filename(req, file, callback) {
+          callback(null, `${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  addProductsMCat(
+    @UploadedFile() file: any,
+    @Body('product_name') name: string,
+    @Body('product_description') description: string,
+    @Body('product_price') price: number,
+    @Body('categoriesDropDown') categoryIds: string[],
+  ) {
+    return this.productsService.createNewProduct(
+      file,
+      name,
+      description,
+      price,
+      categoryIds,
+    );
+  }
+
+  @Put('/update/:id')
+  updateProductsWithCategory(
+    @Param('id') id: string,
+    @Body('product_name') product_name: string,
+    @Body('product_description') product_description: string,
+    @Body('product_price') product_price: number,
+    @Body('catDropDown') categoryIds: string[],
+  ) {
+    return this.productsService.updateProductswithCategory(
+      id,
+      product_name,
+      product_description,
+      product_price,
+      categoryIds,
+    );
+  }
+
   @Put('/upload/single/:id')
   updateProduct(
     @Param('id') id: string,

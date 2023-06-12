@@ -109,7 +109,7 @@ export class AuthService {
       const decodet = this.jwtService.decode(token);
       res.cookie('token', token, {});
 
-      if (findUser.roleId == 2) {
+      if (findUser.roleId == 2 || findUser.roleId == 3) {
         res.redirect('/orders/admin_dashboard');
       } else {
         res.redirect('/users/user_home');

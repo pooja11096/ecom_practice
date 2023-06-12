@@ -14,6 +14,67 @@ import { Product } from '@prisma/client';
 export class ProductsService {
   constructor(private prismaService: PrismaService) {}
 
+  async createNewProduct(
+    file: any,
+    product_name: string,
+    product_description: string,
+    product_price: number,
+    categoryIds: string[],
+  ) {
+    try {
+      return await this.prismaService.product.create({
+        data: {
+          product_name: product_name,
+          product_description: product_description,
+          product_price: +product_price,
+          image_url: file.filename,
+          categories: {
+            connect: categoryIds.map((id) => ({ id })),
+          },
+        },
+        include: { categories: true },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async updateProductswithCategory(
+    // file: any,
+    id: string,
+    product_name: string,
+    product_description: string,
+    product_price: number,
+    categoryIds: string[],
+  ) {
+    console.log('fjdkhglfkh<<<<<<<<<<', categoryIds, 'categoriesCDfcfdf');
+    try {
+      await this.prismaService.product.update({
+        where: { id: id },
+        data: {
+          categories: {
+            set: [],
+          },
+        },
+      });
+      return await this.prismaService.product.update({
+        where: { id },
+        data: {
+          product_name,
+          product_description,
+          product_price,
+          // image_url: file.filename,
+          categories: {
+            // connect: { id: categoryIds },
+            connect: categoryIds.map((id) => ({ id })),
+          },
+        },
+        include: { categories: true },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async uploadSingleFile(
     file: any,
     product_name: string,

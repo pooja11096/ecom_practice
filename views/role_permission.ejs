@@ -30,6 +30,14 @@
             /* display: flex;
             flex-direction: row; */
         }
+
+        #permission_value {
+            background-color: #4bc970;
+            border-radius: 15px;
+            color: black;
+            padding: 10px;
+            margin: 2px;
+        }
     </style>
 
 
@@ -44,14 +52,14 @@
                 <div class="card-header">
                     <div><a href="/orders/admin_dashboard">Home</a></div>
 
-                    <div class="search">
+                    <!-- <div class="search">
                         <label>
                             <input type="text" placeholder="Search here" class="search" id="search"
                                 onkeyup="searching()" />
 
                             <ion-icon name="search-outline"></ion-icon>
                         </label>
-                    </div>
+                    </div> -->
 
                     <div class="user"></div>
                     <div class="header">
@@ -94,10 +102,14 @@
                                         <% for(j=0; j<roles[i].permissions.length;j ++){ %>
                                             <% console.log(permissions[j].name )%>
 
-                                                <%=roles[i].permissions[j].name%>
+                                                <span id="permission_value">
+                                                    <%=roles[i].permissions[j].name%>
+
+                                                </span>
 
 
-                                                    <% }%>
+
+                                                <% }%>
 
                                     </td>
 
@@ -115,10 +127,10 @@
                 </div>
 
                 <div class="card-footer border-0 py-5">
-                    <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
+                    <!-- <span class="text-muted text-sm">Showing 10 items out of 250 results found</span> -->
                 </div>
 
-
+                <!-- 
                 <div class="model-container-products" id="updateuser" style="visibility: hidden;">
                     <div class="col-md-12">
                         <div class="model">
@@ -140,7 +152,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
 
@@ -156,7 +168,7 @@
                                 <fieldset>
 
                                     <label for="name">Role Name</label>
-                                    <input type="text" id="urole_name" name="name">
+                                    <input type="text" id="urole_name" name="name" disabled>
 
 
                                     <div class="permissions" id="permissions_data">
@@ -367,6 +379,8 @@
             );
             console.log("ressaso", res)
             document.querySelector('.model-container').style.visibility = 'hidden';
+            location.reload();
+
         })
     }
 

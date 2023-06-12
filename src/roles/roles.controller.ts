@@ -14,6 +14,8 @@ import {
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { Permissions } from 'src/auth/entities/permissions.decorator';
+import { Permission } from 'src/auth/entities/permissions.enum';
 import { resolve } from 'path/posix';
 
 @Controller('roles')
@@ -32,7 +34,9 @@ export class RolesController {
   }
 
   @Get('/role')
+  @Permissions(Permission.MANAGE_ROLE)
   @Render('role_permission')
+
   // @Render('roless')
   findAllR() {
     return this.rolesService.findAll();

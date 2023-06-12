@@ -6,30 +6,30 @@ const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
-const password = 'admin11'
+const password = 'admin11';
 async function main() {
   await prisma.user.create({
     data: {
-      name: 'admin',
-      email: 'admin2@gmail.com',
+      name: 'super admin',
+      email: 'admin@gmail.com',
       // hashedPassword:'$2y$10$eQBxSXXJwnDMubWxwHk.Tex9kJIcGA8GsT9mt.M/FzX5Yz9UHzkxq',
       // hashedPassword: '$2y$10$lulkhHqFqNxfAFU41sbKGuyAQFxHXqmvQxsivC5eNsOX2zWQTuECe',
-      hashedPassword: bcrypt.hashSync(password,10),
-      
-      roleId: 2
+      hashedPassword: bcrypt.hashSync(password, 10),
+
+      roleId: 3,
     },
   });
 
-//   await prisma.link.createMany({
-//     data: links,
-//   });
+  //   await prisma.link.createMany({
+  //     data: links,
+  //   });
 }
 
 main()
-  .catch(e => {
-    console.error(e)
-    process.exit(1)
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

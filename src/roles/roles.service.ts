@@ -27,6 +27,11 @@ export class RolesService {
 
   async findAll() {
     const roles = await this.prismaService.role.findMany({
+      where: {
+        NOT: {
+          id: 3,
+        },
+      },
       include: {
         permissions: true,
       },

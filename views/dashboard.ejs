@@ -123,7 +123,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">
+                            <a class="nav-link" href="/roles/role">
                                 <i class="bi bi-people"></i> Manage Roles
                             </a>
                         </li>
@@ -411,11 +411,9 @@
                                             </td>
 
                                             <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-neutral">View</a>
-                                                <button type="button" onclick="removeOrder(${response.data[i].id})"
-                                                    class="btn btn-sm btn-square btn-neutral text-danger-hover">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
+                                                <a href="/orders/orderbyid/${response.data[i].id}"
+                                                    class="btn btn-sm btn-neutral" onclick="orderDetail()">View</a>
+                                                
                                             </td>
                                         </tr>`
 

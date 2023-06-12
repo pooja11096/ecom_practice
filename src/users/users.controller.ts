@@ -62,7 +62,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('admin_dashboard')
   @Roles(Role.ADMIN)
-  @Permissions(Permission.READ)
   @Render('dashboard')
   renderHome() {}
 
